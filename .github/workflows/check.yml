@@ -34,3 +34,6 @@ jobs:
 
     - name: Run phpcs
       run: composer phpcs-diff
+
+    - name: Run phpunit
+      run: composer phpunit
