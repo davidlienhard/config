@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace DavidLienhard\Config;
 
 use \DavidLienhard\Config\ConfigInterface;
-test
+
 /**
  * fetches the configuration from json files
  *
