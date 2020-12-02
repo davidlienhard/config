@@ -5,7 +5,14 @@ on: push
 jobs:
   check:
 
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: ['ubuntu-latest']
+        php: ['8.0', '7.4']
+
+    name: PHP ${{ matrix.php }} - ${{ matrix.dependency-version }}
 
     steps:
     - uses: actions/checkout@v2
@@ -14,7 +21,7 @@ jobs:
     - name: Setup PHP
       uses: shivammathur/setup-php@v2
       with:
-        php-version: '7.4'
+        php-version: ${{ matrix.php }}
 
     - name: Get composer cache directory
       id: composer-cache
@@ -34,7 +41,7 @@ jobs:
       run: composer install --prefer-dist --no-progress
 
     - name: Run phplint
-      uses: StephaneBour/actions-php-lint@7.4
+      uses: StephaneBour/actions-php-lint@${{ matrix.php }}
 
     - name: Show changed files
       run: composer changed-files
