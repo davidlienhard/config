@@ -40,13 +40,10 @@ jobs:
     - name: Install dependencies
       run: composer install --prefer-dist --no-progress
 
-    - name: Run phplint 7.4
-      uses: StephaneBour/actions-php-lint@7.4
-      if: matrix.php == '7.4'
-
-    - name: Run phplint 8.0
-      uses: StephaneBour/actions-php-lint@8.0
-      if: matrix.php == '8.0'
+    - name: Run PHP Simple Lint
+      uses: davidlienhard/php-simple-lint@1
+      with:
+        folder: './src'
 
     - name: Show changed files
       run: composer changed-files
