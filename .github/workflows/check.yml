@@ -10,7 +10,7 @@ jobs:
     strategy:
       matrix:
         os: ['ubuntu-latest']
-        php: ['8.0', '7.4']
+        php: ['8.0', '7.4', '7.2']
 
     name: PHP ${{ matrix.php }} - ${{ matrix.os }}
 
@@ -43,7 +43,8 @@ jobs:
     - name: Run PHP Simple Lint
       uses: davidlienhard/php-simple-lint@v1
       with:
-        folder: './src'
+        folder: './'
+        ignore: './vendor/\*'
 
     - name: Show changed files
       run: composer changed-files
