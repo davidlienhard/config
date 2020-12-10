@@ -4,7 +4,7 @@
  *
  * @package         tourBase
  * @author          David Lienhard <david.lienhard@tourasia.ch>
- * @version         1.0.0, 11.11.2020
+ * @version         1.0.4, 10.12.2020
  * @since           1.0.0, 11.11.2020, created
  * @copyright       tourasia
  */
@@ -17,7 +17,7 @@ namespace DavidLienhard\Config;
  * interface for tourBase configuration object
  *
  * @author          David Lienhard <david.lienhard@tourasia.ch>
- * @version         1.0.0, 11.11.2020
+ * @version         1.0.4, 10.12.2020
  * @since           1.0.0, 11.11.2020, created
  * @copyright       tourasia
  */
@@ -46,4 +46,15 @@ interface ConfigInterface
      * @return          \stdClass|array
      */
     public function __get(string $mainKey);
+
+    /**
+     * returns the current log-directory
+     *
+     * @author          David Lienhard <david.lienhard@tourasia.ch>
+     * @version         1.0.4, 10.12.2020
+     * @since           1.0.4, 10.12.2020, created
+     * @copyright       tourasia
+     * @return          array
+     */
+    public function getDirectory() : string;
 }

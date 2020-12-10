@@ -4,7 +4,7 @@
  *
  * @package         tourBase
  * @author          David Lienhard <david.lienhard@tourasia.ch>
- * @version         1.0.3, 17.11.2020
+ * @version         1.0.4, 10.12.2020
  * @since           1.0.3, 17.11.2020, created
  * @copyright       tourasia
  */
@@ -19,7 +19,7 @@ use \DavidLienhard\Config\ConfigInterface;
  * stub class for config
  *
  * @author          David Lienhard <david.lienhard@tourasia.ch>
- * @version         1.0.3, 17.11.2020
+ * @version         1.0.4, 10.12.2020
  * @since           1.0.3, 17.11.2020, created
  * @copyright       tourasia
  */
@@ -32,10 +32,16 @@ class Stub implements ConfigInterface
     private $payload = [ ];
 
     /**
+     * direcory containing configuration files
+     * @var     string
+     */
+    private $directory;
+
+    /**
      * sets path containing configuration files
      *
      * @author          David Lienhard <david.lienhard@tourasia.ch>
-     * @version         1.0.3, 17.11.2020
+     * @version         1.0.4, 10.12.2020
      * @since           1.0.3, 17.11.2020, created
      * @copyright       tourasia
      * @param           string          $directory      directory containing json configuration file
@@ -44,7 +50,7 @@ class Stub implements ConfigInterface
      */
     public function __construct(string $directory)
     {
-        //
+        $this->directory = $directory;
     }
 
     /**
@@ -67,6 +73,20 @@ class Stub implements ConfigInterface
         }
 
         return $payload->{$mainKey};
+    }
+
+    /**
+     * returns the current log-directory
+     *
+     * @author          David Lienhard <david.lienhard@tourasia.ch>
+     * @version         1.0.4, 10.12.2020
+     * @since           1.0.4, 10.12.2020, created
+     * @copyright       tourasia
+     * @return          array
+     */
+    public function getDirectory() : string
+    {
+        return $this->directory;
     }
 
     /**

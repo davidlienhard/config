@@ -4,7 +4,7 @@
  *
  * @package         tourBase
  * @author          David Lienhard <david.lienhard@tourasia.ch>
- * @version         1.0.0, 11.11.2020
+ * @version         1.0.4, 10.12.2020
  * @since           1.0.0, 11.11.2020, created
  * @copyright       tourasia
  */
@@ -19,7 +19,7 @@ use \DavidLienhard\Config\ConfigInterface;
  * fetches the configuration from json files
  *
  * @author          David Lienhard <david.lienhard@tourasia.ch>
- * @version         1.0.0, 11.11.2020
+ * @version         1.0.4, 10.12.2020
  * @since           1.0.0, 11.11.2020, created
  * @copyright       tourasia
 */
@@ -27,7 +27,7 @@ class Config implements ConfigInterface
 {
     /**
      * direcory containing configuration files
-     * @var     array
+     * @var     string
      */
     private $directory;
 
@@ -71,6 +71,21 @@ class Config implements ConfigInterface
         }
 
         return $this->loadedConfiguration[$mainKey];
+    }
+
+    /**
+     * returns the current log-directory
+     *
+     * @author          David Lienhard <david.lienhard@tourasia.ch>
+     * @version         1.0.4, 10.12.2020
+     * @since           1.0.4, 10.12.2020, created
+     * @copyright       tourasia
+     * @return          array
+     * @uses            self::$directory
+     */
+    public function getDirectory() : string
+    {
+        return $this->directory;
     }
 
     /**
