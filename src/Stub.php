@@ -82,7 +82,7 @@ class Stub implements ConfigInterface
      * @version         1.0.4, 10.12.2020
      * @since           1.0.4, 10.12.2020, created
      * @copyright       tourasia
-     * @return          array
+     * @return          string
      */
     public function getDirectory() : string
     {
