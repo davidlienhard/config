@@ -56,14 +56,8 @@ class Config implements ConfigInterface
      * @return          mixed
      * @uses            self::loadedConfiguration()
      */
-    public function get(string ...$keys)
+    public function __get(string $mainKey)
     {
-        if (count($keys) === 0) {
-            throw new \Exception("no keys given");
-        }
-
-        $mainKey = $keys[0];
-
         if (!isset($this->loadedConfiguration[$mainKey])) {
             $this->loadedConfiguration[$mainKey] = $this->loadJson($mainKey);
         }
