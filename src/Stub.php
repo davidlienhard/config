@@ -4,8 +4,6 @@
  *
  * @package         tourBase
  * @author          David Lienhard <david.lienhard@tourasia.ch>
- * @version         1.0.4, 10.12.2020
- * @since           1.0.3, 17.11.2020, created
  * @copyright       tourasia
  */
 
@@ -19,8 +17,6 @@ use \DavidLienhard\Config\ConfigInterface;
  * stub class for config
  *
  * @author          David Lienhard <david.lienhard@tourasia.ch>
- * @version         1.0.4, 10.12.2020
- * @since           1.0.3, 17.11.2020, created
  * @copyright       tourasia
  */
 class Stub implements ConfigInterface
@@ -41,8 +37,6 @@ class Stub implements ConfigInterface
      * sets path containing configuration files
      *
      * @author          David Lienhard <david.lienhard@tourasia.ch>
-     * @version         1.0.4, 10.12.2020
-     * @since           1.0.3, 17.11.2020, created
      * @copyright       tourasia
      * @param           string          $directory      directory containing json configuration file
      * @return          void
@@ -57,8 +51,6 @@ class Stub implements ConfigInterface
      * returns the required configuration
      *
      * @author          David Lienhard <david.lienhard@tourasia.ch>
-     * @version         1.0.3, 17.11.2020
-     * @since           1.0.3, 17.11.2020, created
      * @copyright       tourasia
      * @param           string          $mainKey        the main key of the configuration. will be used as filename
      * @return          \stdClass
@@ -79,8 +71,6 @@ class Stub implements ConfigInterface
      * returns the current log-directory
      *
      * @author          David Lienhard <david.lienhard@tourasia.ch>
-     * @version         1.0.4, 10.12.2020
-     * @since           1.0.4, 10.12.2020, created
      * @copyright       tourasia
      * @return          string
      */
@@ -93,8 +83,6 @@ class Stub implements ConfigInterface
      * adds payload to the object
      *
      * @author          David Lienhard <david.lienhard@tourasia.ch>
-     * @version         1.0.3, 17.11.2020
-     * @since           1.0.3, 17.11.2020, created
      * @copyright       tourasia
      * @param           array           $payload        the payload to add
      * @return          void

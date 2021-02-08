@@ -4,8 +4,6 @@
  *
  * @package         tourBase
  * @author          David Lienhard <david.lienhard@tourasia.ch>
- * @version         1.0.4, 10.12.2020
- * @since           1.0.0, 11.11.2020, created
  * @copyright       tourasia
  */
 
@@ -19,8 +17,6 @@ use \DavidLienhard\Config\ConfigInterface;
  * fetches the configuration from json files
  *
  * @author          David Lienhard <david.lienhard@tourasia.ch>
- * @version         1.0.4, 10.12.2020
- * @since           1.0.0, 11.11.2020, created
  * @copyright       tourasia
 */
 class Config implements ConfigInterface
@@ -41,8 +37,6 @@ class Config implements ConfigInterface
      * sets path containing configuration files
      *
      * @author          David Lienhard <david.lienhard@tourasia.ch>
-     * @version         1.0.0, 11.11.2020
-     * @since           1.0.0, 11.11.2020, created
      * @copyright       tourasia
      * @param           string          $directory      directory containing json configuration file
      * @return          void
@@ -57,15 +51,19 @@ class Config implements ConfigInterface
      * returns the required configuration and loads it once
      *
      * @author          David Lienhard <david.lienhard@tourasia.ch>
-     * @version         1.0.0, 11.11.2020
-     * @since           1.0.0, 11.11.2020, created
      * @copyright       tourasia
      * @param           string          $mainKey        the main key of the configuration. will be used as filename
-     * @return          \stdClass|array
+     * @return          mixed
      * @uses            self::loadedConfiguration()
      */
-    public function __get(string $mainKey)
+    public function get(string ...$keys)
     {
+        if (count($keys) === 0) {
+            throw new \Exception("no keys given");
+        }
+
+        $mainKey = $keys[0];
+
         if (!isset($this->loadedConfiguration[$mainKey])) {
             $this->loadedConfiguration[$mainKey] = $this->loadJson($mainKey);
         }
@@ -77,8 +75,6 @@ class Config implements ConfigInterface
      * returns the current log-directory
      *
      * @author          David Lienhard <david.lienhard@tourasia.ch>
-     * @version         1.0.4, 10.12.2020
-     * @since           1.0.4, 10.12.2020, created
      * @copyright       tourasia
      * @return          string
      * @uses            self::$directory
@@ -92,8 +88,6 @@ class Config implements ConfigInterface
      * loads data from a json file
      *
      * @author          David Lienhard <david.lienhard@tourasia.ch>
-     * @version         1.0.0, 11.11.2020
-     * @since           1.0.0, 11.11.2020, created
      * @copyright       tourasia
      * @param           string          $file           the json file to load
      * @return          \stdClass|array
