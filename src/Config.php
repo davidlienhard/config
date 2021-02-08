@@ -53,7 +53,7 @@ class Config implements ConfigInterface
      * @author          David Lienhard <david.lienhard@tourasia.ch>
      * @copyright       tourasia
      * @param           string          $mainKey        the main key of the configuration. will be used as filename
-     * @return          mixed
+     * @return          \stdClass|array
      * @uses            self::loadedConfiguration()
      */
     public function __get(string $mainKey)
