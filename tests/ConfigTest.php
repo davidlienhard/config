@@ -31,6 +31,6 @@ class ConfigTest extends TestCase
     {
         $config = new Config(".");
         $this->expectException(\Exception::class);
-        $config->doesNotExist;
+        $config->get("doesNotExist");
     }
 }

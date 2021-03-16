@@ -23,7 +23,7 @@ class Stub implements ConfigInterface
 {
     /**
      * the payload to use in the config
-     * @var     array   $payload
+     * @var     array
      */
     private $payload = [ ];
 
@@ -35,7 +35,7 @@ class Stub implements ConfigInterface
      * @param           string          $directory      directory containing json configuration file
      * @return          void
      */
-    public function __construct(string $directory)
+    public function __construct(private string $directory)
     {
     }
 
@@ -45,18 +45,49 @@ class Stub implements ConfigInterface
      * @author          David Lienhard <david.lienhard@tourasia.ch>
      * @copyright       tourasia
      * @param           string          $mainKey        the main key of the configuration. will be used as filename
-     * @return          \stdClass
+     * @param           string          $subKeys        keys that will be used to find the config
+     * @return          mixed
      * @uses            self::$payload
     */
-    public function __get(string $mainKey) : \stdClass
+    public function get(string $mainKey, string ...$subKeys) : mixed
     {
-        $payload = json_decode(json_encode($this->payload));
-
-        if (!isset($payload->{$mainKey})) {
+        if (!isset($this->payload[$mainKey])) {
             throw new \Exception("could not find key with name '".$mainKey."'");
         }
 
-        return $payload->{$mainKey};
+        return $this->getSubKeys(
+            $this->payload[$mainKey],
+            ...$subKeys
+        );
+    }
+
+    /**
+     * returns the required configuration and loads it once
+     *
+     * @author          David Lienhard <david.lienhard@tourasia.ch>
+     * @copyright       tourasia
+     * @param           mixed           $data           data to search through
+     * @param           string          $subKeys        keys that will be used to find the config
+     * @return          mixed
+     * @uses            self::$loadedConfiguration
+     */
+    private function getSubKeys(mixed $data, string ...$subKeys) : mixed
+    {
+        // return data if not subkeys are given
+        if (count($subKeys) === 0) {
+            return $data;
+        }
+
+        // extract first key and remove it from subkeys
+        $firstKey = array_shift($subKeys);
+
+        // return null if given key does not exist
+        if (!isset($data[$firstKey])) {
+            return null;
+        }
+
+        // call self
+        return $this->getSubKeys($data[$firstKey], ...$subKeys);
     }
 
     /**

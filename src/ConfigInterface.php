@@ -35,9 +35,10 @@ interface ConfigInterface
      * @author          David Lienhard <david.lienhard@tourasia.ch>
      * @copyright       tourasia
      * @param           string          $mainKey        the main key of the configuration. will be used as filename
-     * @return          \stdClass|array
+     * @param           string          $subKeys        keys that will be used to find the config
+     * @return          mixed
      */
-    public function __get(string $mainKey);
+    public function get(string $mainKey, string ...$subKeys) : mixed;
 
     /**
      * returns the current log-directory
