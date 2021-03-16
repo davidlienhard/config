@@ -22,12 +22,6 @@ use \DavidLienhard\Config\ConfigInterface;
 class Config implements ConfigInterface
 {
     /**
-     * direcory containing configuration files
-     * @var     string
-     */
-    private $directory;
-
-    /**
      * contains the already loaded configuration objects
      * @var array $loadedConfiguration
      */
@@ -40,11 +34,9 @@ class Config implements ConfigInterface
      * @copyright       tourasia
      * @param           string          $directory      directory containing json configuration file
      * @return          void
-     * @uses            self::$directory
      */
-    public function __construct(string $directory)
+    public function __construct(private string $directory)
     {
-        $this->directory = $directory;
     }
 
     /**
