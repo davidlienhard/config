@@ -24,9 +24,9 @@ class Config implements ConfigInterface
 {
     /**
      * contains the already loaded configuration objects
-     * @var array $loadedConfiguration
+     * @var array
      */
-    private $loadedConfiguration = [ ];
+    private array $loadedConfiguration = [ ];
 
     /**
      * sets path containing configuration files
@@ -46,16 +46,56 @@ class Config implements ConfigInterface
      * @author          David Lienhard <david.lienhard@tourasia.ch>
      * @copyright       tourasia
      * @param           string          $mainKey        the main key of the configuration. will be used as filename
-     * @return          \stdClass|array
-     * @uses            self::loadedConfiguration()
+     * @param           string          $subKeys        keys that will be used to find the config
+     * @return          mixed
+     * @uses            self::$loadedConfiguration
      */
-    public function __get(string $mainKey)
+    public function get(string $mainKey, string ...$subKeys) : mixed
     {
+        // fetch data from json if not loaded already
         if (!isset($this->loadedConfiguration[$mainKey])) {
             $this->loadedConfiguration[$mainKey] = $this->loadJson($mainKey);
         }
 
-        return $this->loadedConfiguration[$mainKey];
+        // return whole data if no subkeys are provided
+        if (count($subKeys) === 0) {
+            return $this->loadedConfiguration[$mainKey];
+        }
+
+        // recurse through configuration
+        return $this->getSubKeys(
+            $this->loadedConfiguration[$mainKey],
+            ...$subKeys
+        );
+    }
+
+    /**
+     * returns the required configuration and loads it once
+     *
+     * @author          David Lienhard <david.lienhard@tourasia.ch>
+     * @copyright       tourasia
+     * @param           mixed           $data           data to search through
+     * @param           string          $subKeys        keys that will be used to find the config
+     * @return          mixed
+     * @uses            self::$loadedConfiguration
+     */
+    private function getSubKeys(mixed $data, string ...$subKeys) : mixed
+    {
+        // return data if not subkeys are given
+        if (count($subKeys) === 0) {
+            return $data;
+        }
+
+        // extract first key and remove it from subkeys
+        $firstKey = array_shift($subKeys);
+
+        // return null if given key does not exist
+        if (!isset($data[$firstKey])) {
+            return null;
+        }
+
+        // call self
+        return $this->getSubKeys($data[$firstKey], ...$subKeys);
     }
 
     /**
@@ -95,11 +135,31 @@ class Config implements ConfigInterface
         }
 
 
-        $config = json_decode($fileContent);
+        $config = json_decode($fileContent, true);
         if ($config === null) {
             throw new \Exception("could not parse config file: ".json_last_error_msg());
         }
 
+        // run $this->replace() to fetch env variables
+        array_walk_recursive($config, [ $this, "replace" ]);
+
         return $config;
+    }
+
+    /**
+     * callback for array_walk_recursive() in self::loadJson()
+     * checks each config entry. if it starts witch env: it will be interpreted as an env variable
+     *
+     * @author          David Lienhard <david.lienhard@tourasia.ch>
+     * @copyright       tourasia
+     * @param           mixed           $item           item to check. used as reference to be able to replace it
+     * @param           int|string      $key            key of the array
+     * @return          void
+     */
+    private function replace(mixed &$item, int | string $key) : void
+    {
+        if (is_string($item) && strtolower(substr($item, 0, 4)) === "env:") {
+            $item = getenv(substr($item, 4));
+        }
     }
 }
