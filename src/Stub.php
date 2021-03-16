@@ -28,23 +28,15 @@ class Stub implements ConfigInterface
     private $payload = [ ];
 
     /**
-     * direcory containing configuration files
-     * @var     string
-     */
-    private $directory;
-
-    /**
      * sets path containing configuration files
      *
      * @author          David Lienhard <david.lienhard@tourasia.ch>
      * @copyright       tourasia
      * @param           string          $directory      directory containing json configuration file
      * @return          void
-     * @uses            self::$directory
      */
     public function __construct(string $directory)
     {
-        $this->directory = $directory;
     }
 
     /**
