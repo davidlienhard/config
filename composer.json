@@ -17,9 +17,16 @@
         "issues": "https://github.com/davidlienhard/config/issues/",
         "email": "david.lienhard@tourasia.ch"
     },
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://packages.tourbase.ch"
+        }
+    ],
     "require": {
         "php": "^8.0",
-        "ext-json": "^8.0"
+        "ext-json": "^8.0",
+        "davidlienhard/functioncaller": "^1"
     },
     "require-dev": {
         "phpunit/phpunit": "^9",
