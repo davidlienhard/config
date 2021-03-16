@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace DavidLienhard\Config;
 
 use \DavidLienhard\Config\ConfigInterface;
+use \DavidLienhard\FunctionCaller\Call as FunctionCaller;
 
 /**
  * fetches the configuration from json files
@@ -87,7 +88,8 @@ class Config implements ConfigInterface
             throw new \Exception("file '".$filePath."' does not exist");
         }
 
-        $fileContent = @file_get_contents($filePath);
+        $caller = new FunctionCaller("file_get_contents", $filePath);
+        $fileContent = $caller->getResult();
         if ($fileContent === false) {
             throw new \Exception("could not load config file");
         }
