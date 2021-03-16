@@ -39,7 +39,8 @@
         "phpstan": "./vendor/bin/phpstan analyse",
         "test": [
             "@phpunit",
-            "@phpcs"
+            "@phpcs",
+            "@phpstan"
         ]
     }
 }
