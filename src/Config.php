@@ -26,7 +26,7 @@ class Config implements ConfigInterface
      * contains the already loaded configuration objects
      * @var array
      */
-    private array $loadedConfiguration = [ ];
+    private array $loadedConfiguration = [];
 
     /**
      * sets path containing configuration files
@@ -47,7 +47,6 @@ class Config implements ConfigInterface
      * @copyright       tourasia
      * @param           string          $mainKey        the main key of the configuration. will be used as filename
      * @param           string          $subKeys        keys that will be used to find the config
-     * @return          mixed
      * @uses            self::$loadedConfiguration
      */
     public function get(string $mainKey, string ...$subKeys) : mixed
@@ -76,7 +75,6 @@ class Config implements ConfigInterface
      * @copyright       tourasia
      * @param           mixed           $data           data to search through
      * @param           string          $subKeys        keys that will be used to find the config
-     * @return          mixed
      * @uses            self::$loadedConfiguration
      */
     private function getSubKeys(mixed $data, string ...$subKeys) : mixed
@@ -103,7 +101,6 @@ class Config implements ConfigInterface
      *
      * @author          David Lienhard <david.lienhard@tourasia.ch>
      * @copyright       tourasia
-     * @return          string
      * @uses            self::$directory
      */
     public function getDirectory() : string
@@ -117,11 +114,10 @@ class Config implements ConfigInterface
      * @author          David Lienhard <david.lienhard@tourasia.ch>
      * @copyright       tourasia
      * @param           string          $file           the json file to load
-     * @return          \stdClass|array
      * @throws          \Exception      if json file cannot be loaded
      * @uses            self::$directory
      */
-    private function loadJson(string $file)
+    private function loadJson(string $file): \stdClass|array
     {
         $filePath = $this->directory.$file.".json";
         if (!file_exists($filePath)) {
@@ -154,7 +150,6 @@ class Config implements ConfigInterface
      * @copyright       tourasia
      * @param           mixed           $item           item to check. used as reference to be able to replace it
      * @param           int|string      $key            key of the array
-     * @return          void
      */
     private function replace(mixed &$item, int | string $key) : void
     {
