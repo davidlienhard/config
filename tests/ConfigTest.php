@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace DavidLienhard;
 
-require_once dirname(__DIR__) . "/src/Config.php";
-require_once dirname(__DIR__) . "/src/ConfigInterface.php";
+require_once dirname(__DIR__)."/src/Config.php";
+require_once dirname(__DIR__)."/src/ConfigInterface.php";
 
 use \PHPUnit\Framework\TestCase;
 use \DavidLienhard\Config\Config;
