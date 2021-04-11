@@ -36,7 +36,6 @@ interface ConfigInterface
      * @copyright       tourasia
      * @param           string          $mainKey        the main key of the configuration. will be used as filename
      * @param           string          $subKeys        keys that will be used to find the config
-     * @return          mixed
      */
     public function get(string $mainKey, string ...$subKeys) : mixed;
 
@@ -45,7 +44,6 @@ interface ConfigInterface
      *
      * @author          David Lienhard <david.lienhard@tourasia.ch>
      * @copyright       tourasia
-     * @return          string
      */
     public function getDirectory() : string;
 }

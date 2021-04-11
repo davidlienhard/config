@@ -25,7 +25,7 @@ class Stub implements ConfigInterface
      * the payload to use in the config
      * @var     array
      */
-    private $payload = [ ];
+    private array $payload = [];
 
     /**
      * sets path containing configuration files
@@ -46,7 +46,6 @@ class Stub implements ConfigInterface
      * @copyright       tourasia
      * @param           string          $mainKey        the main key of the configuration. will be used as filename
      * @param           string          $subKeys        keys that will be used to find the config
-     * @return          mixed
      * @uses            self::$payload
     */
     public function get(string $mainKey, string ...$subKeys) : mixed
@@ -68,7 +67,6 @@ class Stub implements ConfigInterface
      * @copyright       tourasia
      * @param           mixed           $data           data to search through
      * @param           string          $subKeys        keys that will be used to find the config
-     * @return          mixed
      * @uses            self::$loadedConfiguration
      */
     private function getSubKeys(mixed $data, string ...$subKeys) : mixed
@@ -95,7 +93,6 @@ class Stub implements ConfigInterface
      *
      * @author          David Lienhard <david.lienhard@tourasia.ch>
      * @copyright       tourasia
-     * @return          string
      */
     public function getDirectory() : string
     {
@@ -108,7 +105,6 @@ class Stub implements ConfigInterface
      * @author          David Lienhard <david.lienhard@tourasia.ch>
      * @copyright       tourasia
      * @param           array           $payload        the payload to add
-     * @return          void
      * @uses            self::$payload
     */
     public function addPayload(array $payload) : void
