@@ -7,14 +7,12 @@ namespace DavidLienhard;
 require_once dirname(__DIR__)."/src/Config.php";
 require_once dirname(__DIR__)."/src/ConfigInterface.php";
 
-use \PHPUnit\Framework\TestCase;
-use \DavidLienhard\Config\Config;
+use DavidLienhard\Config\Config;
+use PHPUnit\Framework\TestCase;
 
 class ConfigTest extends TestCase
 {
-    /**
-     * @covers \DavidLienhard\Config\Config
-    */
+    /** @covers \DavidLienhard\Config\Config */
     public function testCanBeCreated(): void
     {
         $this->assertInstanceOf(

@@ -151,7 +151,7 @@ class Config implements ConfigInterface
      * @param           mixed           $item           item to check. used as reference to be able to replace it
      * @param           int|string      $key            key of the array
      */
-    private function replace(mixed &$item, int | string $key) : void
+    private function replace(mixed &$item, int|string $key) : void
     {
         if (is_string($item) && strtolower(substr($item, 0, 4)) === "env:") {
             $item = getenv(substr($item, 4));
