@@ -1,6 +1,6 @@
 {
     "name": "davidlienhard/config",
-    "license": "proprietary",
+    "license": ["MIT"],
     "description": "🐘 php library to get configuration data from json files",
     "keywords": [ "config", "json", "php", "library" ],
     "type": "libary",
