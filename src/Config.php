@@ -3,8 +3,8 @@
  * contains \DavidLienhard\Config\Config class
  *
  * @package         tourBase
- * @author          David Lienhard <david.lienhard@tourasia.ch>
- * @copyright       tourasia
+ * @author          David Lienhard <github@lienhard.win>
+ * @copyright       David Lienhard
  */
 
 declare(strict_types=1);
@@ -17,8 +17,8 @@ use \DavidLienhard\FunctionCaller\Call as FunctionCaller;
 /**
  * fetches the configuration from json files
  *
- * @author          David Lienhard <david.lienhard@tourasia.ch>
- * @copyright       tourasia
+ * @author          David Lienhard <github@lienhard.win>
+ * @copyright       David Lienhard
 */
 class Config implements ConfigInterface
 {
@@ -31,8 +31,8 @@ class Config implements ConfigInterface
     /**
      * sets path containing configuration files
      *
-     * @author          David Lienhard <david.lienhard@tourasia.ch>
-     * @copyright       tourasia
+     * @author          David Lienhard <github@lienhard.win>
+     * @copyright       David Lienhard
      * @param           string          $directory      directory containing json configuration file
      * @return          void
      */
@@ -43,8 +43,8 @@ class Config implements ConfigInterface
     /**
      * returns the required configuration and loads it once
      *
-     * @author          David Lienhard <david.lienhard@tourasia.ch>
-     * @copyright       tourasia
+     * @author          David Lienhard <github@lienhard.win>
+     * @copyright       David Lienhard
      * @param           string          $mainKey        the main key of the configuration. will be used as filename
      * @param           string          $subKeys        keys that will be used to find the config
      * @uses            self::$loadedConfiguration
@@ -71,8 +71,8 @@ class Config implements ConfigInterface
     /**
      * returns the required configuration and loads it once
      *
-     * @author          David Lienhard <david.lienhard@tourasia.ch>
-     * @copyright       tourasia
+     * @author          David Lienhard <github@lienhard.win>
+     * @copyright       David Lienhard
      * @param           mixed           $data           data to search through
      * @param           string          $subKeys        keys that will be used to find the config
      * @uses            self::$loadedConfiguration
@@ -99,8 +99,8 @@ class Config implements ConfigInterface
     /**
      * returns the current log-directory
      *
-     * @author          David Lienhard <david.lienhard@tourasia.ch>
-     * @copyright       tourasia
+     * @author          David Lienhard <github@lienhard.win>
+     * @copyright       David Lienhard
      * @uses            self::$directory
      */
     public function getDirectory() : string
@@ -111,8 +111,8 @@ class Config implements ConfigInterface
     /**
      * loads data from a json file
      *
-     * @author          David Lienhard <david.lienhard@tourasia.ch>
-     * @copyright       tourasia
+     * @author          David Lienhard <github@lienhard.win>
+     * @copyright       David Lienhard
      * @param           string          $file           the json file to load
      * @throws          \Exception      if json file cannot be loaded
      * @uses            self::$directory
@@ -146,8 +146,8 @@ class Config implements ConfigInterface
      * callback for array_walk_recursive() in self::loadJson()
      * checks each config entry. if it starts witch env: it will be interpreted as an env variable
      *
-     * @author          David Lienhard <david.lienhard@tourasia.ch>
-     * @copyright       tourasia
+     * @author          David Lienhard <github@lienhard.win>
+     * @copyright       David Lienhard
      * @param           mixed           $item           item to check. used as reference to be able to replace it
      * @param           int|string      $key            key of the array
      */

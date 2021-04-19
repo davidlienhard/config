@@ -3,8 +3,8 @@
  * contains stub class for config
  *
  * @package         tourBase
- * @author          David Lienhard <david.lienhard@tourasia.ch>
- * @copyright       tourasia
+ * @author          David Lienhard <github@lienhard.win>
+ * @copyright       David Lienhard
  */
 
 declare(strict_types=1);
@@ -16,8 +16,8 @@ use \DavidLienhard\Config\ConfigInterface;
 /**
  * stub class for config
  *
- * @author          David Lienhard <david.lienhard@tourasia.ch>
- * @copyright       tourasia
+ * @author          David Lienhard <github@lienhard.win>
+ * @copyright       David Lienhard
  */
 class Stub implements ConfigInterface
 {
@@ -30,8 +30,8 @@ class Stub implements ConfigInterface
     /**
      * sets path containing configuration files
      *
-     * @author          David Lienhard <david.lienhard@tourasia.ch>
-     * @copyright       tourasia
+     * @author          David Lienhard <github@lienhard.win>
+     * @copyright       David Lienhard
      * @param           string          $directory      directory containing json configuration file
      * @return          void
      */
@@ -42,8 +42,8 @@ class Stub implements ConfigInterface
     /**
      * returns the required configuration
      *
-     * @author          David Lienhard <david.lienhard@tourasia.ch>
-     * @copyright       tourasia
+     * @author          David Lienhard <github@lienhard.win>
+     * @copyright       David Lienhard
      * @param           string          $mainKey        the main key of the configuration. will be used as filename
      * @param           string          $subKeys        keys that will be used to find the config
      * @uses            self::$payload
@@ -63,8 +63,8 @@ class Stub implements ConfigInterface
     /**
      * returns the required configuration and loads it once
      *
-     * @author          David Lienhard <david.lienhard@tourasia.ch>
-     * @copyright       tourasia
+     * @author          David Lienhard <github@lienhard.win>
+     * @copyright       David Lienhard
      * @param           mixed           $data           data to search through
      * @param           string          $subKeys        keys that will be used to find the config
      * @uses            self::$loadedConfiguration
@@ -91,8 +91,8 @@ class Stub implements ConfigInterface
     /**
      * returns the current log-directory
      *
-     * @author          David Lienhard <david.lienhard@tourasia.ch>
-     * @copyright       tourasia
+     * @author          David Lienhard <github@lienhard.win>
+     * @copyright       David Lienhard
      */
     public function getDirectory() : string
     {
@@ -102,8 +102,8 @@ class Stub implements ConfigInterface
     /**
      * adds payload to the object
      *
-     * @author          David Lienhard <david.lienhard@tourasia.ch>
-     * @copyright       tourasia
+     * @author          David Lienhard <github@lienhard.win>
+     * @copyright       David Lienhard
      * @param           array           $payload        the payload to add
      * @uses            self::$payload
     */
