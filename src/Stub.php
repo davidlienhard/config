@@ -11,7 +11,7 @@ declare(strict_types=1);
 
 namespace DavidLienhard\Config;
 
-use \DavidLienhard\Config\ConfigInterface;
+use DavidLienhard\Config\ConfigInterface;
 
 /**
  * stub class for config

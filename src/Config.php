@@ -11,8 +11,8 @@ declare(strict_types=1);
 
 namespace DavidLienhard\Config;
 
-use \DavidLienhard\Config\ConfigInterface;
-use \DavidLienhard\FunctionCaller\Call as FunctionCaller;
+use DavidLienhard\Config\ConfigInterface;
+use DavidLienhard\FunctionCaller\Call as FunctionCaller;
 
 /**
  * fetches the configuration from json files
