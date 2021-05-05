@@ -11,6 +11,8 @@ declare(strict_types=1);
 
 namespace DavidLienhard\Config;
 
+use League\Flysystem\Filesystem;
+
 /**
  * interface for tourBase configuration object
  *
@@ -25,9 +27,10 @@ interface ConfigInterface
      * @author          David Lienhard <github@lienhard.win>
      * @copyright       David Lienhard
      * @param           string          $directory      directory containing json configuration file
+     * @param           \League\Flysystem\Filesystem    $filesystem     filesystem to use (defaults to local)
      * @return          void
      */
-    public function __construct(string $directory);
+    public function __construct(string $directory, Filesystem|null $filesystem);
 
     /**
      * returns the required configuration and loads it once
