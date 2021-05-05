@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "01487b3a15c86d48a8d0d5e7a6fb0eda",
+    "content-hash": "d313bd3af2aab835602c34680237f809",
     "packages": [
         {
             "name": "davidlienhard/functioncaller",
