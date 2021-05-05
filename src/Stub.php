@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace DavidLienhard\Config;
 
 use DavidLienhard\Config\ConfigInterface;
+use League\Flysystem\Filesystem;
 
 /**
  * stub class for config
@@ -32,10 +33,11 @@ class Stub implements ConfigInterface
      *
      * @author          David Lienhard <github@lienhard.win>
      * @copyright       David Lienhard
-     * @param           string          $directory      directory containing json configuration file
+     * @param           string                          $directory      directory containing json configuration file
+     * @param           \League\Flysystem\Filesystem    $filesystem     filesystem to use (defaults to local)
      * @return          void
      */
-    public function __construct(private string $directory)
+    public function __construct(private string $directory, private Filesystem|null $filesystem = null)
     {
     }
 
@@ -50,8 +52,9 @@ class Stub implements ConfigInterface
     */
     public function get(string $mainKey, string ...$subKeys) : mixed
     {
+        $filePath = $this->directory.$mainKey.".json";
         if (!isset($this->payload[$mainKey])) {
-            throw new \Exception("could not find key with name '".$mainKey."'");
+            throw new \Exception("file '".$filePath."' does not exist");
         }
 
         return $this->getSubKeys(

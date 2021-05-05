@@ -12,7 +12,10 @@ declare(strict_types=1);
 namespace DavidLienhard\Config;
 
 use DavidLienhard\Config\ConfigInterface;
-use DavidLienhard\FunctionCaller\Call as FunctionCaller;
+use League\Flysystem\Filesystem;
+use League\Flysystem\FilesystemException;
+use League\Flysystem\Local\LocalFilesystemAdapter;
+use League\Flysystem\UnableToReadFile;
 
 /**
  * fetches the configuration from json files
@@ -28,16 +31,26 @@ class Config implements ConfigInterface
      */
     private array $loadedConfiguration = [];
 
+    /** filesystem to use */
+    private Filesystem $filesystem;
+
     /**
      * sets path containing configuration files
      *
      * @author          David Lienhard <github@lienhard.win>
      * @copyright       David Lienhard
-     * @param           string          $directory      directory containing json configuration file
+     * @param           string                          $directory      directory containing json configuration file
+     * @param           \League\Flysystem\Filesystem    $filesystem     filesystem to use (defaults to local)
      * @return          void
      */
-    public function __construct(private string $directory)
+    public function __construct(private string $directory, Filesystem|null $filesystem = null)
     {
+        if ($filesystem === null) {
+            $adapter = new LocalFilesystemAdapter("/");
+            $filesystem = new Filesystem($adapter);
+        }
+
+        $this->filesystem = $filesystem;
     }
 
     /**
@@ -120,16 +133,16 @@ class Config implements ConfigInterface
     private function loadJson(string $file): \stdClass|array
     {
         $filePath = $this->directory.$file.".json";
-        if (!file_exists($filePath)) {
+        if (!$this->filesystem->fileExists($filePath)) {
             throw new \Exception("file '".$filePath."' does not exist");
         }
 
-        $caller = new FunctionCaller("file_get_contents", $filePath);
-        $fileContent = $caller->getResult();
-        if ($fileContent === false) {
-            throw new \Exception("could not load config file");
-        }
 
+        try {
+            $fileContent = $this->filesystem->read($filePath);
+        } catch (FilesystemException | UnableToReadFile $e) {
+            throw new \Exception("could not load config file", $e->getCode(), $e);
+        }
 
         $config = json_decode($fileContent, true);
         if ($config === null) {
