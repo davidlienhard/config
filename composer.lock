@@ -62,16 +62,16 @@
         },
         {
             "name": "league/flysystem",
-            "version": "2.0.5",
+            "version": "2.0.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem.git",
-                "reference": "27ea64cc9d61ae7b6a5f04bebf062d89dd18e8f7"
+                "reference": "f1ecc5c7bf193da14fbc34198ffb16d979ad7d5a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/27ea64cc9d61ae7b6a5f04bebf062d89dd18e8f7",
-                "reference": "27ea64cc9d61ae7b6a5f04bebf062d89dd18e8f7",
+                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/f1ecc5c7bf193da14fbc34198ffb16d979ad7d5a",
+                "reference": "f1ecc5c7bf193da14fbc34198ffb16d979ad7d5a",
                 "shasum": ""
             },
             "require": {
@@ -126,7 +126,7 @@
             ],
             "support": {
                 "issues": "https://github.com/thephpleague/flysystem/issues",
-                "source": "https://github.com/thephpleague/flysystem/tree/2.0.5"
+                "source": "https://github.com/thephpleague/flysystem/tree/2.0.7"
             },
             "funding": [
                 {
@@ -142,7 +142,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-04-11T15:03:35+00:00"
+            "time": "2021-05-13T19:36:24+00:00"
         },
         {
             "name": "league/mime-type-detection",
@@ -386,7 +386,7 @@
         },
         {
             "name": "league/flysystem-memory",
-            "version": "2.0.5",
+            "version": "2.0.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem-memory.git",
@@ -429,7 +429,7 @@
             ],
             "support": {
                 "issues": "https://github.com/thephpleague/flysystem-memory/issues",
-                "source": "https://github.com/thephpleague/flysystem-memory/tree/2.0.5"
+                "source": "https://github.com/thephpleague/flysystem-memory/tree/2.0.6"
             },
             "time": "2021-02-12T19:24:17+00:00"
         },
