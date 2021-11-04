@@ -42,6 +42,46 @@ interface ConfigInterface
     public function get(string $mainKey, string ...$subKeys) : mixed;
 
     /**
+     * returns the required configuration as a string
+     *
+     * @author          David Lienhard <github@lienhard.win>
+     * @copyright       David Lienhard
+     * @param           string          $mainKey        the main key of the configuration. will be used as filename
+     * @param           string          $subKeys        keys that will be used to find the config
+     */
+    public function getAsString(string $mainKey, string ...$subKeys) : string;
+
+    /**
+     * returns the required configuration as an int
+     *
+     * @author          David Lienhard <github@lienhard.win>
+     * @copyright       David Lienhard
+     * @param           string          $mainKey        the main key of the configuration. will be used as filename
+     * @param           string          $subKeys        keys that will be used to find the config
+     */
+    public function getAsInt(string $mainKey, string ...$subKeys) : int;
+
+    /**
+     * returns the required configuration as a float
+     *
+     * @author          David Lienhard <github@lienhard.win>
+     * @copyright       David Lienhard
+     * @param           string          $mainKey        the main key of the configuration. will be used as filename
+     * @param           string          $subKeys        keys that will be used to find the config
+     */
+    public function getAsFloat(string $mainKey, string ...$subKeys) : float;
+
+    /**
+     * returns the required configuration as a bool
+     *
+     * @author          David Lienhard <github@lienhard.win>
+     * @copyright       David Lienhard
+     * @param           string          $mainKey        the main key of the configuration. will be used as filename
+     * @param           string          $subKeys        keys that will be used to find the config
+     */
+    public function getAsBool(string $mainKey, string ...$subKeys) : bool;
+
+    /**
      * returns the current log-directory
      *
      * @author          David Lienhard <github@lienhard.win>
