@@ -197,6 +197,10 @@ class Config implements ConfigInterface
         // extract first key and remove it from subkeys
         $firstKey = array_shift($subKeys);
 
+        if (!is_array($data)) {
+            throw new \Exception("data must be array at this point");
+        }
+
         // return null if given key does not exist
         if (!isset($data[$firstKey])) {
             return null;
@@ -227,7 +231,7 @@ class Config implements ConfigInterface
      * @throws          \Exception      if json file cannot be loaded
      * @uses            self::$directory
      */
-    private function loadJson(string $file): \stdClass|array
+    private function loadJson(string $file) : array
     {
         $filePath = $this->directory.$file.".json";
         if (!$this->filesystem->fileExists($filePath)) {
@@ -238,12 +242,16 @@ class Config implements ConfigInterface
         try {
             $fileContent = $this->filesystem->read($filePath);
         } catch (FilesystemException | UnableToReadFile $e) {
-            throw new \Exception("could not load config file", $e->getCode(), $e);
+            throw new \Exception("could not load config file", intval($e->getCode()), $e);
         }
 
         $config = json_decode($fileContent, true);
         if ($config === null) {
             throw new \Exception("could not parse config file: ".json_last_error_msg());
+        }
+
+        if (!is_array($config)) {
+            throw new \Exception("data must be array at this point");
         }
 
         // run $this->replace() to fetch env variables
