@@ -117,7 +117,7 @@ class Config implements ConfigInterface
      * @param           string          $subKeys        keys that will be used to find the config
      * @uses            self::get()
      */
-    public function getAsString(string $mainKey, string ...$subKeys) : float
+    public function getAsFloat(string $mainKey, string ...$subKeys) : float
     {
         return floatval($this->get($mainKey, $subKeys)
     }
@@ -131,7 +131,7 @@ class Config implements ConfigInterface
      * @param           string          $subKeys        keys that will be used to find the config
      * @uses            self::get()
      */
-    public function getAsString(string $mainKey, string ...$subKeys) : bool
+    public function getAsBool(string $mainKey, string ...$subKeys) : bool
     {
         return boolval($this->get($mainKey, $subKeys)
     }
