@@ -140,6 +140,27 @@ class Stub implements ConfigInterface
     }
 
     /**
+     * returns the required configuration as an object
+     *
+     * @author          David Lienhard <github@lienhard.win>
+     * @copyright       David Lienhard
+     * @param           string          $mainKey        the main key of the configuration. will be used as filename
+     * @param           string          $subKeys        keys that will be used to find the config
+     * @uses            self::get()
+     * @throws          \Exception      if data cannot be returned as an object
+     */
+    public function getAsObject(string $mainKey, string ...$subKeys) : object
+    {
+        $data = $this->get($mainKey, $subKeys);
+        
+        if (!is_object($data)) {
+            throw new \Exception("given data cannot be returned as an object");
+        }
+        
+        return $data;
+    }
+
+    /**
      * returns the required configuration and loads it once
      *
      * @author          David Lienhard <github@lienhard.win>
