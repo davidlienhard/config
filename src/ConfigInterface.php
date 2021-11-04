@@ -92,6 +92,16 @@ interface ConfigInterface
     public function getAsArray(string $mainKey, string ...$subKeys) : array;
 
     /**
+     * returns the required configuration as an object
+     *
+     * @author          David Lienhard <github@lienhard.win>
+     * @copyright       David Lienhard
+     * @param           string          $mainKey        the main key of the configuration. will be used as filename
+     * @param           string          $subKeys        keys that will be used to find the config
+     */
+    public function getAsObject(string $mainKey, string ...$subKeys) : object;
+
+    /**
      * returns the current log-directory
      *
      * @author          David Lienhard <github@lienhard.win>
