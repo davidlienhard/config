@@ -91,7 +91,7 @@ class Config implements ConfigInterface
      */
     public function getAsString(string $mainKey, string ...$subKeys) : string
     {
-        return strval($this->get($mainKey, $subKeys));
+        return strval($this->get($mainKey, ...$subKeys));
     }
 
     /**
@@ -105,7 +105,7 @@ class Config implements ConfigInterface
      */
     public function getAsInt(string $mainKey, string ...$subKeys) : int
     {
-        return intval($this->get($mainKey, $subKeys));
+        return intval($this->get($mainKey, ...$subKeys));
     }
 
     /**
@@ -119,7 +119,7 @@ class Config implements ConfigInterface
      */
     public function getAsFloat(string $mainKey, string ...$subKeys) : float
     {
-        return floatval($this->get($mainKey, $subKeys));
+        return floatval($this->get($mainKey, ...$subKeys));
     }
 
     /**
@@ -133,7 +133,7 @@ class Config implements ConfigInterface
      */
     public function getAsBool(string $mainKey, string ...$subKeys) : bool
     {
-        return boolval($this->get($mainKey, $subKeys));
+        return boolval($this->get($mainKey, ...$subKeys));
     }
 
     /**
@@ -148,12 +148,12 @@ class Config implements ConfigInterface
      */
     public function getAsArray(string $mainKey, string ...$subKeys) : array
     {
-        $data = $this->get($mainKey, $subKeys);
-        
+        $data = $this->get($mainKey, ...$subKeys);
+
         if (!is_array($data)) {
             throw new \Exception("given data cannot be returned as an arrray");
         }
-        
+
         return $data;
     }
 
@@ -169,12 +169,12 @@ class Config implements ConfigInterface
      */
     public function getAsObject(string $mainKey, string ...$subKeys) : object
     {
-        $data = $this->get($mainKey, $subKeys);
-        
+        $data = $this->get($mainKey, ...$subKeys);
+
         if (!is_object($data)) {
             throw new \Exception("given data cannot be returned as an object");
         }
-        
+
         return $data;
     }
 
