@@ -1,0 +1,7 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Property DavidLienhard\\\\Config\\\\Stub\\:\\:\\$filesystem is never read, only written\\.$#"
+			count: 1
+			path: src/Stub.php
+

@@ -81,6 +81,10 @@ class Stub implements ConfigInterface
         // extract first key and remove it from subkeys
         $firstKey = array_shift($subKeys);
 
+        if (!is_array($data)) {
+            throw new \Exception("data must be array at this point");
+        }
+
         // return null if given key does not exist
         if (!isset($data[$firstKey])) {
             return null;
