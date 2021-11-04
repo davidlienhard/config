@@ -81,6 +81,62 @@ class Config implements ConfigInterface
     }
 
     /**
+     * returns the required configuration as a string
+     *
+     * @author          David Lienhard <github@lienhard.win>
+     * @copyright       David Lienhard
+     * @param           string          $mainKey        the main key of the configuration. will be used as filename
+     * @param           string          $subKeys        keys that will be used to find the config
+     * @uses            self::get()
+     */
+    public function getAsString(string $mainKey, string ...$subKeys) : string
+    {
+        return strval($this->get($mainKey, $subKeys)
+    }
+
+    /**
+     * returns the required configuration as an int
+     *
+     * @author          David Lienhard <github@lienhard.win>
+     * @copyright       David Lienhard
+     * @param           string          $mainKey        the main key of the configuration. will be used as filename
+     * @param           string          $subKeys        keys that will be used to find the config
+     * @uses            self::get()
+     */
+    public function getAsInt(string $mainKey, string ...$subKeys) : int
+    {
+        return intval($this->get($mainKey, $subKeys)
+    }
+
+    /**
+     * returns the required configuration as a float
+     *
+     * @author          David Lienhard <github@lienhard.win>
+     * @copyright       David Lienhard
+     * @param           string          $mainKey        the main key of the configuration. will be used as filename
+     * @param           string          $subKeys        keys that will be used to find the config
+     * @uses            self::get()
+     */
+    public function getAsString(string $mainKey, string ...$subKeys) : float
+    {
+        return floatval($this->get($mainKey, $subKeys)
+    }
+
+    /**
+     * returns the required configuration as a bool
+     *
+     * @author          David Lienhard <github@lienhard.win>
+     * @copyright       David Lienhard
+     * @param           string          $mainKey        the main key of the configuration. will be used as filename
+     * @param           string          $subKeys        keys that will be used to find the config
+     * @uses            self::get()
+     */
+    public function getAsString(string $mainKey, string ...$subKeys) : bool
+    {
+        return boolval($this->get($mainKey, $subKeys)
+    }
+
+    /**
      * returns the required configuration and loads it once
      *
      * @author          David Lienhard <github@lienhard.win>
