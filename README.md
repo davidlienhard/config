@@ -134,11 +134,11 @@ var_dump($config->get("doesnotexist"));
 ## Exceptions
 The library currently contains the following exceptions
 
-`Config` - Main Exception that is parent of all other exceptions
-  `Conversion` - Errors that happten during type conversion. eg trying to convert a string to an array
-  `Mismatch` - Trying to access configuration data that is not available
-    `FileMismatch` - Trying to access a file that does not exist
-    `KeyMismatch` - Trying to access a key that does not exists, while the file is present
+ - `Config` - Main Exception that is parent of all other exceptions
+  - `Conversion` - Errors that happen during type conversion. eg trying to convert a string to an array
+  - `Mismatch` - Trying to access configuration data that is not available
+    - `FileMismatch` - Trying to access a file that does not exist
+    - `KeyMismatch` - Trying to access a key that does not exists, while the file is present
 
 ## License
 
