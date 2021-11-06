@@ -11,6 +11,9 @@
 namespace DavidLienhard\Config;
 
 use DavidLienhard\Config\ConfigInterface;
+use DavidLienhard\Config\Exceptions\Conversion as ConversionException;
+use DavidLienhard\Config\Exceptions\FileMismatch as FileMismatchException;
+use DavidLienhard\Config\Exceptions\KeyMismatch as KeyMismatchException;
 use League\Flysystem\Filesystem;
 
 /**
