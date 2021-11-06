@@ -63,6 +63,26 @@ echo $config->get("system", "list1", "key1");
 /* value1 */
 ```
 
+**get single value with a specific type**
+```php
+<?php declare(strict_types=1);
+
+echo $config->getAsString("system", "name");
+/*
+ if the value exists and is not an array, it will return a string in any case
+ if the value is an array, this will throw an exception
+ if the value does not exist this will return null
+*/
+```
+
+the following methods do exists
+ - `getAsString()`
+ - `getAsInt()`
+ - `getAsFloat()`
+ - `getAsBool()`
+ - `getAsArray()`
+
+
 **get associative array**
 ```php
 <?php declare(strict_types=1);
