@@ -56,6 +56,12 @@ class Stub implements ConfigInterface
             throw new \Exception("file '".$filePath."' does not exist");
         }
 
+        // return whole data if no subkeys are provided
+        if (count($subKeys) === 0) {
+            return $this->payload[$mainKey];
+        }
+
+        // recurse through configuration
         return $this->getSubKeys(
             $this->payload[$mainKey],
             ...$subKeys
@@ -71,9 +77,15 @@ class Stub implements ConfigInterface
      * @param           string          $subKeys        keys that will be used to find the config
      * @uses            self::get()
      */
-    public function getAsString(string $mainKey, string ...$subKeys) : string
+    public function getAsString(string $mainKey, string ...$subKeys) : string|null
     {
-        return strval($this->get($mainKey, ...$subKeys));
+        $data = $this->get($mainKey, ...$subKeys);
+
+        if (is_array($data)) {
+            throw new \Exception("cannot convert array to string");
+        }
+
+        return $data !== null ? strval($data) : null;
     }
 
     /**
@@ -85,9 +97,15 @@ class Stub implements ConfigInterface
      * @param           string          $subKeys        keys that will be used to find the config
      * @uses            self::get()
      */
-    public function getAsInt(string $mainKey, string ...$subKeys) : int
+    public function getAsInt(string $mainKey, string ...$subKeys) : int|null
     {
-        return intval($this->get($mainKey, ...$subKeys));
+        $data = $this->get($mainKey, ...$subKeys);
+
+        if (is_array($data)) {
+            throw new \Exception("cannot convert array to int");
+        }
+
+        return $data !== null ? intval($data) : null;
     }
 
     /**
@@ -99,9 +117,15 @@ class Stub implements ConfigInterface
      * @param           string          $subKeys        keys that will be used to find the config
      * @uses            self::get()
      */
-    public function getAsFloat(string $mainKey, string ...$subKeys) : float
+    public function getAsFloat(string $mainKey, string ...$subKeys) : float|null
     {
-        return floatval($this->get($mainKey, ...$subKeys));
+        $data = $this->get($mainKey, ...$subKeys);
+
+        if (is_array($data)) {
+            throw new \Exception("cannot convert array to float");
+        }
+
+        return $data !== null ? floatval($data) : null;
     }
 
     /**
@@ -113,9 +137,15 @@ class Stub implements ConfigInterface
      * @param           string          $subKeys        keys that will be used to find the config
      * @uses            self::get()
      */
-    public function getAsBool(string $mainKey, string ...$subKeys) : bool
+    public function getAsBool(string $mainKey, string ...$subKeys) : bool|null
     {
-        return boolval($this->get($mainKey, ...$subKeys));
+        $data = $this->get($mainKey, ...$subKeys);
+
+        if (is_array($data)) {
+            throw new \Exception("cannot convert array to bool");
+        }
+
+        return $data !== null ? boolval($data) : null;
     }
 
     /**
@@ -128,33 +158,16 @@ class Stub implements ConfigInterface
      * @uses            self::get()
      * @throws          \Exception      if data cannot be returned as an array
      */
-    public function getAsArray(string $mainKey, string ...$subKeys) : array
+    public function getAsArray(string $mainKey, string ...$subKeys) : array|null
     {
         $data = $this->get($mainKey, ...$subKeys);
 
-        if (!is_array($data)) {
-            throw new \Exception("given data cannot be returned as an arrray");
+        if ($data === null) {
+            return null;
         }
 
-        return $data;
-    }
-
-    /**
-     * returns the required configuration as an object
-     *
-     * @author          David Lienhard <github@lienhard.win>
-     * @copyright       David Lienhard
-     * @param           string          $mainKey        the main key of the configuration. will be used as filename
-     * @param           string          $subKeys        keys that will be used to find the config
-     * @uses            self::get()
-     * @throws          \Exception      if data cannot be returned as an object
-     */
-    public function getAsObject(string $mainKey, string ...$subKeys) : object
-    {
-        $data = $this->get($mainKey, ...$subKeys);
-
-        if (!is_object($data)) {
-            throw new \Exception("given data cannot be returned as an object");
+        if (!is_array($data)) {
+            throw new \Exception("given data cannot be returned as an array");
         }
 
         return $data;
@@ -197,6 +210,7 @@ class Stub implements ConfigInterface
      *
      * @author          David Lienhard <github@lienhard.win>
      * @copyright       David Lienhard
+     * @uses            self::$directory
      */
     public function getDirectory() : string
     {

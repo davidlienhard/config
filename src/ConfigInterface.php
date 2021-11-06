@@ -49,7 +49,7 @@ interface ConfigInterface
      * @param           string          $mainKey        the main key of the configuration. will be used as filename
      * @param           string          $subKeys        keys that will be used to find the config
      */
-    public function getAsString(string $mainKey, string ...$subKeys) : string;
+    public function getAsString(string $mainKey, string ...$subKeys) : string|null;
 
     /**
      * returns the required configuration as an int
@@ -59,7 +59,7 @@ interface ConfigInterface
      * @param           string          $mainKey        the main key of the configuration. will be used as filename
      * @param           string          $subKeys        keys that will be used to find the config
      */
-    public function getAsInt(string $mainKey, string ...$subKeys) : int;
+    public function getAsInt(string $mainKey, string ...$subKeys) : int|null;
 
     /**
      * returns the required configuration as a float
@@ -69,7 +69,7 @@ interface ConfigInterface
      * @param           string          $mainKey        the main key of the configuration. will be used as filename
      * @param           string          $subKeys        keys that will be used to find the config
      */
-    public function getAsFloat(string $mainKey, string ...$subKeys) : float;
+    public function getAsFloat(string $mainKey, string ...$subKeys) : float|null;
 
     /**
      * returns the required configuration as a bool
@@ -79,7 +79,7 @@ interface ConfigInterface
      * @param           string          $mainKey        the main key of the configuration. will be used as filename
      * @param           string          $subKeys        keys that will be used to find the config
      */
-    public function getAsBool(string $mainKey, string ...$subKeys) : bool;
+    public function getAsBool(string $mainKey, string ...$subKeys) : bool|null;
 
     /**
      * returns the required configuration as an array
@@ -89,17 +89,7 @@ interface ConfigInterface
      * @param           string          $mainKey        the main key of the configuration. will be used as filename
      * @param           string          $subKeys        keys that will be used to find the config
      */
-    public function getAsArray(string $mainKey, string ...$subKeys) : array;
-
-    /**
-     * returns the required configuration as an object
-     *
-     * @author          David Lienhard <github@lienhard.win>
-     * @copyright       David Lienhard
-     * @param           string          $mainKey        the main key of the configuration. will be used as filename
-     * @param           string          $subKeys        keys that will be used to find the config
-     */
-    public function getAsObject(string $mainKey, string ...$subKeys) : object;
+    public function getAsArray(string $mainKey, string ...$subKeys) : array|null;
 
     /**
      * returns the current log-directory
