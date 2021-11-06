@@ -38,9 +38,6 @@ class Stub implements ConfigInterface
      */
     public function __construct(private string $directory, private Filesystem|null $filesystem = null)
     {
-        if (!$this->filesystem->has($directory)) {
-            throw new SetupException("given directory '".$directory."' does not exist");
-        }
     }
 
     /**
