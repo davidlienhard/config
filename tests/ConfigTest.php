@@ -4,6 +4,9 @@ namespace DavidLienhard;
 
 use DavidLienhard\Config\Config;
 use DavidLienhard\Config\ConfigInterface;
+use DavidLienhard\Config\Exceptions\Conversion as ConversionException;
+use DavidLienhard\Config\Exceptions\FileMismatch as FileMismatchException;
+use DavidLienhard\Config\Exceptions\KeyMismatch as KeyMismatchException;
 use League\Flysystem\Filesystem;
 use League\Flysystem\InMemory\InMemoryFilesystemAdapter;
 use PHPUnit\Framework\TestCase;
@@ -77,7 +80,7 @@ class ConfigTest extends TestCase
         $filesystem = $this->getFilesystem();
 
         $config = new Config("/", $filesystem);
-        $this->expectException(\Exception::class);
+        $this->expectException(FileMismatchException::class);
         $this->expectExceptionMessage("file '/doesNotExist.json' does not exist");
         $config->get("doesNotExist");
     }
@@ -123,7 +126,8 @@ class ConfigTest extends TestCase
         $filesystem->write("simple.json", self::$files['simple']);
 
         $config = new Config("/", $filesystem);
-        $this->assertEquals(null, $config->get("simple", "doesnotexist"));
+        $this->expectException(KeyMismatchException::class);
+        $config->get("simple", "doesnotexist");
     }
 
     /** @covers \DavidLienhard\Config\Config */
@@ -133,7 +137,7 @@ class ConfigTest extends TestCase
         $filesystem->write("invalid.json", self::$files['invalid']);
 
         $config = new Config("/", $filesystem);
-        $this->expectException(\Exception::class);
+        $this->expectException(FileMismatchException::class);
         $this->expectExceptionMessageMatches("/^could not parse config file:/");
         $this->assertEquals(null, $config->get("invalid"));
     }
@@ -194,11 +198,11 @@ class ConfigTest extends TestCase
 
 
         $result = $config->getAsString("complex", "key", "null");
-        $this->assertEquals(null, $result);
-        $this->assertNull($result);
+        $this->assertEquals("", $result);
+        $this->assertIsString($result);
 
 
-        $this->expectException(\Exception::class);
+        $this->expectException(ConversionException::class);
         $config->getAsString("complex", "key", "array");
     }
 
@@ -236,11 +240,11 @@ class ConfigTest extends TestCase
 
 
         $result = $config->getAsInt("complex", "key", "null");
-        $this->assertEquals(null, $result);
-        $this->assertNull($result);
+        $this->assertEquals(0, $result);
+        $this->assertIsInt($result);
 
 
-        $this->expectException(\Exception::class);
+        $this->expectException(ConversionException::class);
         $config->getAsInt("complex", "key", "array");
     }
 
@@ -278,11 +282,11 @@ class ConfigTest extends TestCase
 
 
         $result = $config->getAsFloat("complex", "key", "null");
-        $this->assertEquals(null, $result);
-        $this->assertNull($result);
+        $this->assertEquals(0.0, $result);
+        $this->assertIsFloat($result);
 
 
-        $this->expectException(\Exception::class);
+        $this->expectException(ConversionException::class);
         $config->getAsFloat("complex", "key", "array");
     }
 
@@ -320,11 +324,11 @@ class ConfigTest extends TestCase
 
 
         $result = $config->getAsBool("complex", "key", "null");
-        $this->assertEquals(null, $result);
-        $this->assertNull($result);
+        $this->assertEquals(false, $result);
+        $this->assertIsBool($result);
 
 
-        $this->expectException(\Exception::class);
+        $this->expectException(ConversionException::class);
         $config->getAsBool("complex", "key", "array");
     }
 
@@ -337,7 +341,7 @@ class ConfigTest extends TestCase
         $config = new Config("/", $filesystem);
 
 
-        $this->expectException(\Exception::class);
+        $this->expectException(ConversionException::class);
         $config->getAsArray("complex", "key", "string");
     }
 
@@ -350,7 +354,7 @@ class ConfigTest extends TestCase
         $config = new Config("/", $filesystem);
 
 
-        $this->expectException(\Exception::class);
+        $this->expectException(ConversionException::class);
         $config->getAsArray("complex", "key", "int1");
     }
 
@@ -363,7 +367,7 @@ class ConfigTest extends TestCase
         $config = new Config("/", $filesystem);
 
 
-        $this->expectException(\Exception::class);
+        $this->expectException(ConversionException::class);
         $config->getAsArray("complex", "key", "float1");
     }
 
@@ -376,7 +380,7 @@ class ConfigTest extends TestCase
         $config = new Config("/", $filesystem);
 
 
-        $this->expectException(\Exception::class);
+        $this->expectException(ConversionException::class);
         $config->getAsArray("complex", "key", "boolTrue");
     }
 
@@ -389,21 +393,21 @@ class ConfigTest extends TestCase
         $config = new Config("/", $filesystem);
 
 
-        $this->expectException(\Exception::class);
+        $this->expectException(ConversionException::class);
         $config->getAsArray("complex", "key", "boolFalse");
     }
 
     /** @covers \DavidLienhard\Config\Config */
-    public function testCanGetNullAsArray() : void
+    public function testCannotGetNullAsArray() : void
     {
         $filesystem = $this->getFilesystem();
         $filesystem->write("complex.json", self::$files['complex']);
 
         $config = new Config("/", $filesystem);
 
-        $result = $config->getAsArray("complex", "key", "null");
-        $this->assertEquals(null, $result);
-        $this->assertNull($result);
+
+        $this->expectException(ConversionException::class);
+        $config->getAsArray("complex", "key", "null");
     }
 
     /** @covers \DavidLienhard\Config\Config */

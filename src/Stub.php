@@ -38,6 +38,9 @@ class Stub implements ConfigInterface
      */
     public function __construct(private string $directory, private Filesystem|null $filesystem = null)
     {
+        if (!$this->filesystem->has($directory)) {
+            throw new SetupException("given directory '".$directory."' does not exist");
+        }
     }
 
     /**
@@ -53,7 +56,7 @@ class Stub implements ConfigInterface
     {
         $filePath = $this->directory.$mainKey.".json";
         if (!isset($this->payload[$mainKey])) {
-            throw new \Exception("file '".$filePath."' does not exist");
+            throw new FileMismatchException("file '".$filePath."' does not exist");
         }
 
         // return whole data if no subkeys are provided
@@ -77,15 +80,15 @@ class Stub implements ConfigInterface
      * @param           string          $subKeys        keys that will be used to find the config
      * @uses            self::get()
      */
-    public function getAsString(string $mainKey, string ...$subKeys) : string|null
+    public function getAsString(string $mainKey, string ...$subKeys) : string
     {
         $data = $this->get($mainKey, ...$subKeys);
 
         if (is_array($data)) {
-            throw new \Exception("cannot convert array to string");
+            throw new ConversionException("cannot convert array to string");
         }
 
-        return $data !== null ? strval($data) : null;
+        return strval($data);
     }
 
     /**
@@ -97,15 +100,15 @@ class Stub implements ConfigInterface
      * @param           string          $subKeys        keys that will be used to find the config
      * @uses            self::get()
      */
-    public function getAsInt(string $mainKey, string ...$subKeys) : int|null
+    public function getAsInt(string $mainKey, string ...$subKeys) : int
     {
         $data = $this->get($mainKey, ...$subKeys);
 
         if (is_array($data)) {
-            throw new \Exception("cannot convert array to int");
+            throw new ConversionException("cannot convert array to int");
         }
 
-        return $data !== null ? intval($data) : null;
+        return intval($data);
     }
 
     /**
@@ -117,15 +120,15 @@ class Stub implements ConfigInterface
      * @param           string          $subKeys        keys that will be used to find the config
      * @uses            self::get()
      */
-    public function getAsFloat(string $mainKey, string ...$subKeys) : float|null
+    public function getAsFloat(string $mainKey, string ...$subKeys) : float
     {
         $data = $this->get($mainKey, ...$subKeys);
 
         if (is_array($data)) {
-            throw new \Exception("cannot convert array to float");
+            throw new ConversionException("cannot convert array to float");
         }
 
-        return $data !== null ? floatval($data) : null;
+        return floatval($data);
     }
 
     /**
@@ -137,15 +140,15 @@ class Stub implements ConfigInterface
      * @param           string          $subKeys        keys that will be used to find the config
      * @uses            self::get()
      */
-    public function getAsBool(string $mainKey, string ...$subKeys) : bool|null
+    public function getAsBool(string $mainKey, string ...$subKeys) : bool
     {
         $data = $this->get($mainKey, ...$subKeys);
 
         if (is_array($data)) {
-            throw new \Exception("cannot convert array to bool");
+            throw new ConversionException("cannot convert array to bool");
         }
 
-        return $data !== null ? boolval($data) : null;
+        return boolval($data);
     }
 
     /**
@@ -156,18 +159,14 @@ class Stub implements ConfigInterface
      * @param           string          $mainKey        the main key of the configuration. will be used as filename
      * @param           string          $subKeys        keys that will be used to find the config
      * @uses            self::get()
-     * @throws          \Exception      if data cannot be returned as an array
+     * @throws          ConversionException             if data cannot be returned as an array
      */
-    public function getAsArray(string $mainKey, string ...$subKeys) : array|null
+    public function getAsArray(string $mainKey, string ...$subKeys) : array
     {
         $data = $this->get($mainKey, ...$subKeys);
 
-        if ($data === null) {
-            return null;
-        }
-
         if (!is_array($data)) {
-            throw new \Exception("given data cannot be returned as an array");
+            throw new ConversionException("given data cannot be returned as an array");
         }
 
         return $data;
@@ -192,13 +191,9 @@ class Stub implements ConfigInterface
         // extract first key and remove it from subkeys
         $firstKey = array_shift($subKeys);
 
-        if (!is_array($data)) {
-            throw new \Exception("data must be array at this point");
-        }
-
-        // return null if given key does not exist
-        if (!isset($data[$firstKey])) {
-            return null;
+        // throw if given key does not exist
+        if (!is_array($data) || !isset($data[$firstKey])) {
+            throw new KeyMismatchException("configuration mismatch. check you configuration");
         }
 
         // call self
