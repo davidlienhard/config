@@ -19,6 +19,7 @@ class ConfigTest extends TestCase
         self::$files['complex'] = <<<CODE
         {
             "key": {
+                "string": "string value",
                 "array": [
                     "value1",
                     "value2",
@@ -157,5 +158,270 @@ class ConfigTest extends TestCase
 
         $config = new Config("/test/directory", $filesystem);
         $this->assertEquals("/test/directory", $config->getDirectory());
+    }
+
+    /** @covers \DavidLienhard\Config\Config */
+    public function testCanGetAsString() : void
+    {
+        $filesystem = $this->getFilesystem();
+        $filesystem->write("complex.json", self::$files['complex']);
+
+        $config = new Config("/", $filesystem);
+
+        $result = $config->getAsString("complex", "key", "string");
+        $this->assertEquals("string value", $result);
+        $this->assertIsString($result);
+
+
+        $result = $config->getAsString("complex", "key", "int1");
+        $this->assertEquals("5", $result);
+        $this->assertIsString($result);
+
+
+        $result = $config->getAsString("complex", "key", "float1");
+        $this->assertEquals("121.181", $result);
+        $this->assertIsString($result);
+
+
+        $result = $config->getAsString("complex", "key", "boolTrue");
+        $this->assertEquals("1", $result);
+        $this->assertIsString($result);
+
+
+        $result = $config->getAsString("complex", "key", "boolFalse");
+        $this->assertEquals("", $result);
+        $this->assertIsString($result);
+
+
+        $result = $config->getAsString("complex", "key", "null");
+        $this->assertEquals(null, $result);
+        $this->assertNull($result);
+
+
+        $this->expectException(\Exception::class);
+        $config->getAsString("complex", "key", "array");
+    }
+
+    /** @covers \DavidLienhard\Config\Config */
+    public function testCanGetAsInt() : void
+    {
+        $filesystem = $this->getFilesystem();
+        $filesystem->write("complex.json", self::$files['complex']);
+
+        $config = new Config("/", $filesystem);
+
+        $result = $config->getAsInt("complex", "key", "string");
+        $this->assertEquals(0, $result);
+        $this->assertIsInt($result);
+
+
+        $result = $config->getAsInt("complex", "key", "int1");
+        $this->assertEquals(5, $result);
+        $this->assertIsInt($result);
+
+
+        $result = $config->getAsInt("complex", "key", "float1");
+        $this->assertEquals(121, $result);
+        $this->assertIsInt($result);
+
+
+        $result = $config->getAsInt("complex", "key", "boolTrue");
+        $this->assertEquals(1, $result);
+        $this->assertIsInt($result);
+
+
+        $result = $config->getAsInt("complex", "key", "boolFalse");
+        $this->assertEquals(0, $result);
+        $this->assertIsInt($result);
+
+
+        $result = $config->getAsInt("complex", "key", "null");
+        $this->assertEquals(null, $result);
+        $this->assertNull($result);
+
+
+        $this->expectException(\Exception::class);
+        $config->getAsInt("complex", "key", "array");
+    }
+
+    /** @covers \DavidLienhard\Config\Config */
+    public function testCanGetAsFloat() : void
+    {
+        $filesystem = $this->getFilesystem();
+        $filesystem->write("complex.json", self::$files['complex']);
+
+        $config = new Config("/", $filesystem);
+
+        $result = $config->getAsFloat("complex", "key", "string");
+        $this->assertEquals(0.0, $result);
+        $this->assertIsFloat($result);
+
+
+        $result = $config->getAsFloat("complex", "key", "int1");
+        $this->assertEquals(5.0, $result);
+        $this->assertIsFloat($result);
+
+
+        $result = $config->getAsFloat("complex", "key", "float1");
+        $this->assertEquals(121.181, $result);
+        $this->assertIsFloat($result);
+
+
+        $result = $config->getAsFloat("complex", "key", "boolTrue");
+        $this->assertEquals(1.0, $result);
+        $this->assertIsFloat($result);
+
+
+        $result = $config->getAsFloat("complex", "key", "boolFalse");
+        $this->assertEquals(0.0, $result);
+        $this->assertIsFloat($result);
+
+
+        $result = $config->getAsFloat("complex", "key", "null");
+        $this->assertEquals(null, $result);
+        $this->assertNull($result);
+
+
+        $this->expectException(\Exception::class);
+        $config->getAsFloat("complex", "key", "array");
+    }
+
+    /** @covers \DavidLienhard\Config\Config */
+    public function testCanGetAsBool() : void
+    {
+        $filesystem = $this->getFilesystem();
+        $filesystem->write("complex.json", self::$files['complex']);
+
+        $config = new Config("/", $filesystem);
+
+        $result = $config->getAsBool("complex", "key", "string");
+        $this->assertEquals(true, $result);
+        $this->assertIsBool($result);
+
+
+        $result = $config->getAsBool("complex", "key", "int1");
+        $this->assertEquals(true, $result);
+        $this->assertIsBool($result);
+
+
+        $result = $config->getAsBool("complex", "key", "float1");
+        $this->assertEquals(true, $result);
+        $this->assertIsBool($result);
+
+
+        $result = $config->getAsBool("complex", "key", "boolTrue");
+        $this->assertEquals(true, $result);
+        $this->assertIsBool($result);
+
+
+        $result = $config->getAsBool("complex", "key", "boolFalse");
+        $this->assertEquals(false, $result);
+        $this->assertIsBool($result);
+
+
+        $result = $config->getAsBool("complex", "key", "null");
+        $this->assertEquals(null, $result);
+        $this->assertNull($result);
+
+
+        $this->expectException(\Exception::class);
+        $config->getAsBool("complex", "key", "array");
+    }
+
+    /** @covers \DavidLienhard\Config\Config */
+    public function testCannotGetStringAsArray() : void
+    {
+        $filesystem = $this->getFilesystem();
+        $filesystem->write("complex.json", self::$files['complex']);
+
+        $config = new Config("/", $filesystem);
+
+
+        $this->expectException(\Exception::class);
+        $config->getAsArray("complex", "key", "string");
+    }
+
+    /** @covers \DavidLienhard\Config\Config */
+    public function testCannotGetIntAsArray() : void
+    {
+        $filesystem = $this->getFilesystem();
+        $filesystem->write("complex.json", self::$files['complex']);
+
+        $config = new Config("/", $filesystem);
+
+
+        $this->expectException(\Exception::class);
+        $config->getAsArray("complex", "key", "int1");
+    }
+
+    /** @covers \DavidLienhard\Config\Config */
+    public function testCannotGetFloatAsArray() : void
+    {
+        $filesystem = $this->getFilesystem();
+        $filesystem->write("complex.json", self::$files['complex']);
+
+        $config = new Config("/", $filesystem);
+
+
+        $this->expectException(\Exception::class);
+        $config->getAsArray("complex", "key", "float1");
+    }
+
+    /** @covers \DavidLienhard\Config\Config */
+    public function testCannotGetBoolTrueAsArray() : void
+    {
+        $filesystem = $this->getFilesystem();
+        $filesystem->write("complex.json", self::$files['complex']);
+
+        $config = new Config("/", $filesystem);
+
+
+        $this->expectException(\Exception::class);
+        $config->getAsArray("complex", "key", "boolTrue");
+    }
+
+    /** @covers \DavidLienhard\Config\Config */
+    public function testCannotGetBoolFalseAsArray() : void
+    {
+        $filesystem = $this->getFilesystem();
+        $filesystem->write("complex.json", self::$files['complex']);
+
+        $config = new Config("/", $filesystem);
+
+
+        $this->expectException(\Exception::class);
+        $config->getAsArray("complex", "key", "boolFalse");
+    }
+
+    /** @covers \DavidLienhard\Config\Config */
+    public function testCanGetNullAsArray() : void
+    {
+        $filesystem = $this->getFilesystem();
+        $filesystem->write("complex.json", self::$files['complex']);
+
+        $config = new Config("/", $filesystem);
+
+        $result = $config->getAsArray("complex", "key", "null");
+        $this->assertEquals(null, $result);
+        $this->assertNull($result);
+    }
+
+    /** @covers \DavidLienhard\Config\Config */
+    public function testCanGetAsArray() : void
+    {
+        $filesystem = $this->getFilesystem();
+        $filesystem->write("complex.json", self::$files['complex']);
+
+        $config = new Config("/", $filesystem);
+
+        $result = $config->getAsArray("complex", "key", "array");
+        $this->assertEquals([
+            "value1",
+            "value2",
+            "value3",
+            "value4",
+            "value5"
+        ], $result);
+        $this->assertIsArray($result);
     }
 }
