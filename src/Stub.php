@@ -59,6 +59,9 @@ class Stub implements ConfigInterface
             throw new FileMismatchException("file '".$filePath."' does not exist");
         }
 
+        // run $this->replace() to fetch env variables
+        array_walk_recursive($this->payload, [ $this, "replace" ]);
+
         // return whole data if no subkeys are provided
         if (count($subKeys) === 0) {
             return $this->payload[$mainKey];
@@ -214,6 +217,22 @@ class Stub implements ConfigInterface
     public function getDirectory() : string
     {
         return $this->directory;
+    }
+
+    /**
+     * callback for array_walk_recursive() in self::loadJson()
+     * checks each config entry. if it starts witch env: it will be interpreted as an env variable
+     *
+     * @author          David Lienhard <github@lienhard.win>
+     * @copyright       David Lienhard
+     * @param           mixed           $item           item to check. used as reference to be able to replace it
+     * @param           int|string      $key            key of the array
+     */
+    private function replace(mixed &$item, int|string $key) : void
+    {
+        if (is_string($item) && strtolower(substr($item, 0, 4)) === "env:") {
+            $item = getenv(substr($item, 4));
+        }
     }
 
     /**
