@@ -11,6 +11,9 @@
 namespace DavidLienhard\Config;
 
 use DavidLienhard\Config\ConfigInterface;
+use DavidLienhard\Config\Exceptions\Conversion as ConversionException;
+use DavidLienhard\Config\Exceptions\FileMismatch as FileMismatchException;
+use DavidLienhard\Config\Exceptions\KeyMismatch as KeyMismatchException;
 use League\Flysystem\Filesystem;
 use League\Flysystem\FilesystemException;
 use League\Flysystem\Local\LocalFilesystemAdapter;
@@ -88,16 +91,17 @@ class Config implements ConfigInterface
      * @param           string          $mainKey        the main key of the configuration. will be used as filename
      * @param           string          $subKeys        keys that will be used to find the config
      * @uses            self::get()
+     * @throws          ConversionException             if data cannot be returned as a string
      */
-    public function getAsString(string $mainKey, string ...$subKeys) : string|null
+    public function getAsString(string $mainKey, string ...$subKeys) : string
     {
         $data = $this->get($mainKey, ...$subKeys);
 
         if (is_array($data)) {
-            throw new \Exception("cannot convert array to string");
+            throw new ConversionException("cannot convert array to string");
         }
 
-        return $data !== null ? strval($data) : null;
+        return strval($data);
     }
 
     /**
@@ -108,16 +112,17 @@ class Config implements ConfigInterface
      * @param           string          $mainKey        the main key of the configuration. will be used as filename
      * @param           string          $subKeys        keys that will be used to find the config
      * @uses            self::get()
+     * @throws          ConversionException             if data cannot be returned as an int
      */
-    public function getAsInt(string $mainKey, string ...$subKeys) : int|null
+    public function getAsInt(string $mainKey, string ...$subKeys) : int
     {
         $data = $this->get($mainKey, ...$subKeys);
 
         if (is_array($data)) {
-            throw new \Exception("cannot convert array to int");
+            throw new ConversionException("cannot convert array to int");
         }
 
-        return $data !== null ? intval($data) : null;
+        return intval($data);
     }
 
     /**
@@ -128,16 +133,17 @@ class Config implements ConfigInterface
      * @param           string          $mainKey        the main key of the configuration. will be used as filename
      * @param           string          $subKeys        keys that will be used to find the config
      * @uses            self::get()
+     * @throws          ConversionException             if data cannot be returned as a float
      */
-    public function getAsFloat(string $mainKey, string ...$subKeys) : float|null
+    public function getAsFloat(string $mainKey, string ...$subKeys) : float
     {
         $data = $this->get($mainKey, ...$subKeys);
 
         if (is_array($data)) {
-            throw new \Exception("cannot convert array to float");
+            throw new ConversionException("cannot convert array to float");
         }
 
-        return $data !== null ? floatval($data) : null;
+        return floatval($data);
     }
 
     /**
@@ -148,16 +154,17 @@ class Config implements ConfigInterface
      * @param           string          $mainKey        the main key of the configuration. will be used as filename
      * @param           string          $subKeys        keys that will be used to find the config
      * @uses            self::get()
+     * @throws          ConversionException             if data cannot be returned as a bool
      */
-    public function getAsBool(string $mainKey, string ...$subKeys) : bool|null
+    public function getAsBool(string $mainKey, string ...$subKeys) : bool
     {
         $data = $this->get($mainKey, ...$subKeys);
 
         if (is_array($data)) {
-            throw new \Exception("cannot convert array to bool");
+            throw new ConversionException("cannot convert array to bool");
         }
 
-        return $data !== null ? boolval($data) : null;
+        return boolval($data);
     }
 
     /**
@@ -168,18 +175,14 @@ class Config implements ConfigInterface
      * @param           string          $mainKey        the main key of the configuration. will be used as filename
      * @param           string          $subKeys        keys that will be used to find the config
      * @uses            self::get()
-     * @throws          \Exception      if data cannot be returned as an array
+     * @throws          ConversionException             if data cannot be returned as an array
      */
-    public function getAsArray(string $mainKey, string ...$subKeys) : array|null
+    public function getAsArray(string $mainKey, string ...$subKeys) : array
     {
         $data = $this->get($mainKey, ...$subKeys);
 
-        if ($data === null) {
-            return null;
-        }
-
         if (!is_array($data)) {
-            throw new \Exception("given data cannot be returned as an array");
+            throw new ConversionException("given data cannot be returned as an array");
         }
 
         return $data;
@@ -192,7 +195,7 @@ class Config implements ConfigInterface
      * @copyright       David Lienhard
      * @param           mixed           $data           data to search through
      * @param           string          $subKeys        keys that will be used to find the config
-     * @uses            self::$loadedConfiguration
+     * @throws          KeyMismatchException            if given key cannot be found
      */
     private function getSubKeys(mixed $data, string ...$subKeys) : mixed
     {
@@ -204,9 +207,9 @@ class Config implements ConfigInterface
         // extract first key and remove it from subkeys
         $firstKey = array_shift($subKeys);
 
-        // return null if given key does not exist
-        if (!is_array($data) || !isset($data[$firstKey])) {
-            return null;
+        // throw if given key does not exist
+        if (!is_array($data) || !array_key_exists($firstKey, $data)) {
+            throw new KeyMismatchException("configuration mismatch. check you configuration");
         }
 
         // call self
@@ -231,30 +234,30 @@ class Config implements ConfigInterface
      * @author          David Lienhard <github@lienhard.win>
      * @copyright       David Lienhard
      * @param           string          $file           the json file to load
-     * @throws          \Exception      if json file cannot be loaded
+     * @throws          FileMismatchException           if json file cannot be loaded or parsed
      * @uses            self::$directory
      */
     private function loadJson(string $file) : array
     {
         $filePath = $this->directory.$file.".json";
         if (!$this->filesystem->fileExists($filePath)) {
-            throw new \Exception("file '".$filePath."' does not exist");
+            throw new FileMismatchException("file '".$filePath."' does not exist");
         }
 
 
         try {
             $fileContent = $this->filesystem->read($filePath);
         } catch (FilesystemException | UnableToReadFile $e) {
-            throw new \Exception("could not load config file", intval($e->getCode()), $e);
+            throw new FileMismatchException("could not load config file", intval($e->getCode()), $e);
         }
 
         $config = json_decode($fileContent, true);
         if ($config === null) {
-            throw new \Exception("could not parse config file: ".json_last_error_msg());
+            throw new FileMismatchException("could not parse config file: ".json_last_error_msg());
         }
 
         if (!is_array($config)) {
-            throw new \Exception("data must be array at this point");
+            throw new FileMismatchException("data must be array at this point");
         }
 
         // run $this->replace() to fetch env variables
