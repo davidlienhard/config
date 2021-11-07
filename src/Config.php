@@ -195,7 +195,7 @@ class Config implements ConfigInterface
      * @copyright       David Lienhard
      * @param           mixed           $data           data to search through
      * @param           string          $subKeys        keys that will be used to find the config
-     * @uses            self::$loadedConfiguration
+     * @throws          KeyMismatchException            if given key cannot be found
      */
     private function getSubKeys(mixed $data, string ...$subKeys) : mixed
     {
@@ -234,7 +234,7 @@ class Config implements ConfigInterface
      * @author          David Lienhard <github@lienhard.win>
      * @copyright       David Lienhard
      * @param           string          $file           the json file to load
-     * @throws          FileMismatchException           if json file cannot be loaded
+     * @throws          FileMismatchException           if json file cannot be loaded or parsed
      * @uses            self::$directory
      */
     private function loadJson(string $file) : array

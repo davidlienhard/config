@@ -26,7 +26,7 @@ class Stub implements ConfigInterface
 {
     /**
      * the payload to use in the config
-     * @var     array
+     * @var array
      */
     private array $payload = [];
 
@@ -51,7 +51,7 @@ class Stub implements ConfigInterface
      * @param           string          $mainKey        the main key of the configuration. will be used as filename
      * @param           string          $subKeys        keys that will be used to find the config
      * @uses            self::$payload
-    */
+     */
     public function get(string $mainKey, string ...$subKeys) : mixed
     {
         $filePath = $this->directory.$mainKey.".json";
@@ -79,6 +79,7 @@ class Stub implements ConfigInterface
      * @param           string          $mainKey        the main key of the configuration. will be used as filename
      * @param           string          $subKeys        keys that will be used to find the config
      * @uses            self::get()
+     * @throws          ConversionException             if data cannot be returned as a string
      */
     public function getAsString(string $mainKey, string ...$subKeys) : string
     {
@@ -99,6 +100,7 @@ class Stub implements ConfigInterface
      * @param           string          $mainKey        the main key of the configuration. will be used as filename
      * @param           string          $subKeys        keys that will be used to find the config
      * @uses            self::get()
+     * @throws          ConversionException             if data cannot be returned as an int
      */
     public function getAsInt(string $mainKey, string ...$subKeys) : int
     {
@@ -119,6 +121,7 @@ class Stub implements ConfigInterface
      * @param           string          $mainKey        the main key of the configuration. will be used as filename
      * @param           string          $subKeys        keys that will be used to find the config
      * @uses            self::get()
+     * @throws          ConversionException             if data cannot be returned as a float
      */
     public function getAsFloat(string $mainKey, string ...$subKeys) : float
     {
@@ -139,6 +142,7 @@ class Stub implements ConfigInterface
      * @param           string          $mainKey        the main key of the configuration. will be used as filename
      * @param           string          $subKeys        keys that will be used to find the config
      * @uses            self::get()
+     * @throws          ConversionException             if data cannot be returned as a bool
      */
     public function getAsBool(string $mainKey, string ...$subKeys) : bool
     {
@@ -179,7 +183,7 @@ class Stub implements ConfigInterface
      * @copyright       David Lienhard
      * @param           mixed           $data           data to search through
      * @param           string          $subKeys        keys that will be used to find the config
-     * @uses            self::$loadedConfiguration
+     * @throws          KeyMismatchException            if given key cannot be found
      */
     private function getSubKeys(mixed $data, string ...$subKeys) : mixed
     {
@@ -192,7 +196,7 @@ class Stub implements ConfigInterface
         $firstKey = array_shift($subKeys);
 
         // throw if given key does not exist
-        if (!is_array($data) || !isset($data[$firstKey])) {
+        if (!is_array($data) || !array_key_exists($firstKey, $data)) {
             throw new KeyMismatchException("configuration mismatch. check you configuration");
         }
 
