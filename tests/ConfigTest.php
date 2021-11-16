@@ -42,10 +42,32 @@ class ConfigTest extends TestCase
         }
         CODE;
 
+        self::$files['complexYaml'] = <<<CODE
+        key:
+          string: string value
+          array:
+          - value1
+          - value2
+          - value3
+          - value4
+          - value5
+          boolTrue: true
+          boolFalse: false
+          'null':
+          int1: 5
+          int2: -6
+          float1: 121.181
+          float2: -1516.51
+        CODE;
+
         self::$files['invalid'] = <<<CODE
         {
             "key
         }
+        CODE;
+
+        self::$files['invalidYaml'] = <<<CODE
+        key: key: key:
         CODE;
 
         self::$files['env'] = <<<CODE
@@ -136,6 +158,18 @@ class ConfigTest extends TestCase
     {
         $filesystem = $this->getFilesystem();
         $filesystem->write("invalid.json", self::$files['invalid']);
+
+        $config = new Config("/", $filesystem);
+        $this->expectException(ParseException::class);
+        $this->expectExceptionMessageMatches("/^could not parse config file:/");
+        $this->assertEquals(null, $config->get("invalid"));
+    }
+
+    /** @covers \DavidLienhard\Config\Config */
+    public function testThrowsExceptionOnInvalidYamlFile() : void
+    {
+        $filesystem = $this->getFilesystem();
+        $filesystem->write("invalid.yml", self::$files['invalidYaml']);
 
         $config = new Config("/", $filesystem);
         $this->expectException(ParseException::class);
@@ -428,5 +462,24 @@ class ConfigTest extends TestCase
             "value5"
         ], $result);
         $this->assertIsArray($result);
+    }
+
+    /** @covers \DavidLienhard\Config\Config */
+    public function testJsonAndYmlAreIdentical() : void
+    {
+        $filesystem = $this->getFilesystem();
+        $filesystem->write("complex.json", self::$files['complex']);
+
+        $config = new Config("/", $filesystem);
+        $jsonData = $config->get("complex");
+
+
+        $filesystem = $this->getFilesystem();
+        $filesystem->write("complex.yml", self::$files['complexYaml']);
+
+        $config = new Config("/", $filesystem);
+        $ymlData = $config->get("complex");
+
+        $this->assertEquals($jsonData, $ymlData);
     }
 }

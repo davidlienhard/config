@@ -17,6 +17,7 @@ use DavidLienhard\Config\Exceptions\FileMismatch as FileMismatchException;
 use DavidLienhard\Config\Exceptions\KeyMismatch as KeyMismatchException;
 use DavidLienhard\Config\Parser\Json as JsonParser;
 use DavidLienhard\Config\Parser\ParserAbstract;
+use DavidLienhard\Config\Parser\Yaml as YamlParser;
 use League\Flysystem\Filesystem;
 use League\Flysystem\FilesystemException;
 use League\Flysystem\Local\LocalFilesystemAdapter;
@@ -41,11 +42,12 @@ class Config implements ConfigInterface
 
     /**
      * list of parser-classes
-     * defaults to json
+     * defaults to json & yaml
      * @var array<int, class-string>
      */
     private array $registeredParsers = [
-        JsonParser::class
+        JsonParser::class,
+        YamlParser::class
     ];
 
     /**
