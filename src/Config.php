@@ -11,9 +11,12 @@
 namespace DavidLienhard\Config;
 
 use DavidLienhard\Config\ConfigInterface;
+use DavidLienhard\Config\Exceptions\Config as ConfigException;
 use DavidLienhard\Config\Exceptions\Conversion as ConversionException;
 use DavidLienhard\Config\Exceptions\FileMismatch as FileMismatchException;
 use DavidLienhard\Config\Exceptions\KeyMismatch as KeyMismatchException;
+use DavidLienhard\Config\Parser\Json as JsonParser;
+use DavidLienhard\Config\Parser\ParserAbstract;
 use League\Flysystem\Filesystem;
 use League\Flysystem\FilesystemException;
 use League\Flysystem\Local\LocalFilesystemAdapter;
@@ -37,6 +40,21 @@ class Config implements ConfigInterface
     private Filesystem $filesystem;
 
     /**
+     * list of parser-classes
+     * defaults to json
+     * @var array<int, class-string>
+     */
+    private array $registeredParsers = [
+        JsonParser::class
+    ];
+
+    /**
+     * list of all supported filetypes and the respective parser to use
+     * @var array<string, class-string>
+     */
+    private array $filetypeList = [];
+
+    /**
      * sets path containing configuration files
      *
      * @author          David Lienhard <github@lienhard.win>
@@ -53,6 +71,8 @@ class Config implements ConfigInterface
         }
 
         $this->filesystem = $filesystem;
+
+        $this->updateFiletypeList();
     }
 
     /**
@@ -68,7 +88,7 @@ class Config implements ConfigInterface
     {
         // fetch data from json if not loaded already
         if (!isset($this->loadedConfiguration[$mainKey])) {
-            $this->loadedConfiguration[$mainKey] = $this->loadJson($mainKey);
+            $this->loadedConfiguration[$mainKey] = $this->loadFile($mainKey);
         }
 
         // return whole data if no subkeys are provided
@@ -229,36 +249,80 @@ class Config implements ConfigInterface
     }
 
     /**
-     * loads data from a json file
+     * registers a new parser
+     * given value must be full name to class and class must be subclass of ParserAbstract
      *
      * @author          David Lienhard <github@lienhard.win>
      * @copyright       David Lienhard
-     * @param           string          $file           the json file to load
-     * @throws          FileMismatchException           if json file cannot be loaded or parsed
+     * @param           class-string    $parser         name including full namespace of parser
+     */
+    public function registerParser(string $parser) : void
+    {
+        if (!\is_subclass_of($parser, ParserAbstract::class)) {
+            throw new ConfigException("parser must be subclass of 'ParserAbstract'");
+        }
+
+        $this->registeredParsers[] = $parser;
+    }
+
+    /**
+     * unregisters an existing parser
+     * given value must be full name to class
+     *
+     * @author          David Lienhard <github@lienhard.win>
+     * @copyright       David Lienhard
+     * @param           class-string    $parser         name including full namespace of parser
+     */
+    public function unregisterParser(string $parser) : bool
+    {
+        if (($key = \array_search($parser, $this->registeredParsers, true)) !== false) {
+            \unset($this->registeredParsers[$key]);
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * loads data from a file
+     *
+     * @author          David Lienhard <github@lienhard.win>
+     * @copyright       David Lienhard
+     * @param           string          $file           the file to load
+     * @throws          FileMismatchException           if file cannot be loaded or parsed
      * @uses            self::$directory
      */
-    private function loadJson(string $file) : array
+    private function loadFile(string $file) : array
     {
-        $filePath = $this->directory.$file.".json";
-        if (!$this->filesystem->fileExists($filePath)) {
-            throw new FileMismatchException("file '".$filePath."' does not exist");
+        $parserToUse = null;
+        $fileToUse = null;
+
+        foreach ($this->filetypeList as $filetype => $parser) {
+            $fullFilePath = $this->directory.$file.".".$filetype;
+            if ($this->filesystem->fileExists($fullFilePath)) {
+                $parserToUse = $parser;
+                $fileToUse = $fullFilePath;
+                break;
+            }
+        }
+
+        if ($parserToUse === null || $fileToUse === null) {
+            throw new FileMismatchException("unable to find config file for '".$file."' in '".$this->directory."'");
         }
 
 
         try {
-            $fileContent = $this->filesystem->read($filePath);
+            $fileContent = $this->filesystem->read($fileToUse);
         } catch (FilesystemException | UnableToReadFile $e) {
             throw new FileMismatchException("could not load config file", intval($e->getCode()), $e);
         }
 
-        $config = json_decode($fileContent, true);
-        if ($config === null) {
-            throw new FileMismatchException("could not parse config file: ".json_last_error_msg());
+        $parser = new $parserToUse;
+        if (! $parser instanceof ParserAbstract) {
+            throw new ConfigException("invalid parser");
         }
 
-        if (!is_array($config)) {
-            throw new FileMismatchException("data must be array at this point");
-        }
+        $config = $parser->parse($fileContent);
 
         // run $this->replace() to fetch env variables
         array_walk_recursive($config, [ $this, "replace" ]);
@@ -279,6 +343,25 @@ class Config implements ConfigInterface
     {
         if (is_string($item) && strtolower(substr($item, 0, 4)) === "env:") {
             $item = getenv(substr($item, 4));
+        }
+    }
+
+    /**
+     * updates the list with the filetypes to parser
+     *
+     * @author          David Lienhard <github@lienhard.win>
+     * @copyright       David Lienhard
+     */
+    private function updateFiletypeList() : void
+    {
+        $this->filetypeList = [];
+
+        foreach ($this->registeredParsers as $parser) {
+            $supportedFiletypes = $parser::getSupportedFiletypes();
+
+            foreach ($supportedFiletypes as $filetype) {
+                $this->filetypeList[$filetype] = $parser;
+            }
         }
     }
 }

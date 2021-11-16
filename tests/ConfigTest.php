@@ -7,6 +7,7 @@ use DavidLienhard\Config\ConfigInterface;
 use DavidLienhard\Config\Exceptions\Conversion as ConversionException;
 use DavidLienhard\Config\Exceptions\FileMismatch as FileMismatchException;
 use DavidLienhard\Config\Exceptions\KeyMismatch as KeyMismatchException;
+use DavidLienhard\Config\Exceptions\Parse as ParseException;
 use League\Flysystem\Filesystem;
 use League\Flysystem\InMemory\InMemoryFilesystemAdapter;
 use PHPUnit\Framework\TestCase;
@@ -81,7 +82,7 @@ class ConfigTest extends TestCase
 
         $config = new Config("/", $filesystem);
         $this->expectException(FileMismatchException::class);
-        $this->expectExceptionMessage("file '/doesNotExist.json' does not exist");
+        $this->expectExceptionMessage("unable to find config file for 'doesNotExist' in '/'");
         $config->get("doesNotExist");
     }
 
@@ -137,7 +138,7 @@ class ConfigTest extends TestCase
         $filesystem->write("invalid.json", self::$files['invalid']);
 
         $config = new Config("/", $filesystem);
-        $this->expectException(FileMismatchException::class);
+        $this->expectException(ParseException::class);
         $this->expectExceptionMessageMatches("/^could not parse config file:/");
         $this->assertEquals(null, $config->get("invalid"));
     }
