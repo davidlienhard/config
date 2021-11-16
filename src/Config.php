@@ -265,6 +265,7 @@ class Config implements ConfigInterface
         }
 
         $this->registeredParsers[] = $parser;
+        $this->updateFiletypeList();
     }
 
     /**
@@ -279,6 +280,7 @@ class Config implements ConfigInterface
     {
         if (($key = \array_search($parser, $this->registeredParsers, true)) !== false) {
             \unset($this->registeredParsers[$key]);
+            $this->updateFiletypeList();
             return true;
         }
 
