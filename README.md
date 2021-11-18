@@ -132,9 +132,9 @@ var_dump($config->get("doesnotexist"));
 ```
 
 ### Parsers / Supported Filetypes
-By default, this library contains two parsers. One for JSon & one for Yaml/Yml files.
-If regired it is possible to add a customer parser for othe filetypes, i.e. XML or INI.
-The custom Parser must extend the class `ParserAbstract` and implement the Interface `ParserInterface`.
+By default, this library contains two parsers. One for Json & one for Yaml/Yml files.
+If required it is possible to add a customer parser for othe filetypes, i.e. XML or INI.
+The custom parser must extend the class `ParserAbstract` and implement the Interface `ParserInterface`.
 A parser can be registered as follows:
 ```php
 <?php declare(strict_types=1);
