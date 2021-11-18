@@ -279,7 +279,7 @@ class Config implements ConfigInterface
     public function unregisterParser(string $parser) : bool
     {
         if (($key = \array_search($parser, $this->registeredParsers, true)) !== false) {
-            \unset($this->registeredParsers[$key]);
+            unset($this->registeredParsers[$key]);
             $this->updateFiletypeList();
             return true;
         }
