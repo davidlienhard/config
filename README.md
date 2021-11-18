@@ -131,6 +131,21 @@ var_dump($config->get("doesnotexist"));
 /* throws \Exception */
 ```
 
+### Parsers / Supported Filetypes
+By default, this library contains two parsers. One for JSon & one for Yaml/Yml files.
+If regired it is possible to add a customer parser for othe filetypes, i.e. XML or INI.
+The custom Parser must extend the class `ParserAbstract` and implement the Interface `ParserInterface`.
+A parser can be registered as follows:
+```php
+<?php declare(strict_types=1);
+
+try {
+    $config->registerParser(\your\custom\parser::class);
+} catch (ConfigException $e) {
+    die("unable to register custom parser");
+}
+```
+
 ## Exceptions
 The library currently contains the following exceptions
 
@@ -138,6 +153,7 @@ The library currently contains the following exceptions
    - `Conversion` - Errors that happen during type conversion. eg trying to convert a string to an array
    - `Mismatch` - Trying to access configuration data that is not available
      - `FileMismatch` - Trying to access a file that does not exist
+       - `Parser` - errors that happen when parsing files. usually through invalid files
      - `KeyMismatch` - Trying to access a key that does not exists, while the file is present
 
 ## License
