@@ -1,5 +1,5 @@
 # davidlienhard/config
-🐘 php library to get configuration data from json files
+🐘 php library to get configuration data from json/yaml files
 
 [![Latest Stable Version](https://img.shields.io/packagist/v/davidlienhard/config.svg?style=flat-square)](https://packagist.org/packages/davidlienhard/config)
 [![Source Code](https://img.shields.io/badge/source-davidlienhard/config-blue.svg?style=flat-square)](https://github.com/davidlienhard/config)
