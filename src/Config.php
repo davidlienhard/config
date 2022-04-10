@@ -52,7 +52,7 @@ class Config implements ConfigInterface
 
     /**
      * list of all supported filetypes and the respective parser to use
-     * @var array<string, class-string>
+     * @var array<class-string>
      */
     private array $filetypeList = [];
 

@@ -38,7 +38,7 @@ abstract class ParserAbstract implements ParserInterface
      *
      * @author          David Lienhard <github@lienhard.win>
      * @copyright       David Lienhard
-     * @return          array<int, string>
+     * @return          array<string>
      */
     public static function getSupportedFiletypes() : array
     {
