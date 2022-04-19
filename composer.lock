@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "985a2df753d838b0af2b5f3d20d2641e",
+    "content-hash": "ee7a8d0cae4da82f5100227c1aed11ed",
     "packages": [
         {
             "name": "davidlienhard/functioncaller",
@@ -686,22 +686,22 @@
         },
         {
             "name": "league/flysystem-memory",
-            "version": "2.0.6",
+            "version": "3.0.14",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem-memory.git",
-                "reference": "f644026c705b8a501543f38cb8b745a603aa4952"
+                "reference": "874b022ed7bd095765d1ebf187b750bb809176a9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem-memory/zipball/f644026c705b8a501543f38cb8b745a603aa4952",
-                "reference": "f644026c705b8a501543f38cb8b745a603aa4952",
+                "url": "https://api.github.com/repos/thephpleague/flysystem-memory/zipball/874b022ed7bd095765d1ebf187b750bb809176a9",
+                "reference": "874b022ed7bd095765d1ebf187b750bb809176a9",
                 "shasum": ""
             },
             "require": {
                 "ext-fileinfo": "*",
-                "league/flysystem": "^2.0.0",
-                "php": "^7.2 || ^8.0"
+                "league/flysystem": "^2.0.0 || ^3.0.0",
+                "php": "^8.0.2"
             },
             "type": "library",
             "autoload": {
@@ -729,9 +729,9 @@
             ],
             "support": {
                 "issues": "https://github.com/thephpleague/flysystem-memory/issues",
-                "source": "https://github.com/thephpleague/flysystem-memory/tree/2.0.6"
+                "source": "https://github.com/thephpleague/flysystem-memory/tree/3.0.14"
             },
-            "time": "2021-02-12T19:24:17+00:00"
+            "time": "2022-04-02T16:55:28+00:00"
         },
         {
             "name": "myclabs/deep-copy",
