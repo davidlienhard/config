@@ -21,7 +21,7 @@
         "php": "^8.0",
         "ext-json": "^8.0",
         "davidlienhard/functioncaller": "^1",
-        "league/flysystem": "^2",
+        "league/flysystem": "^3",
         "symfony/yaml": "^6",
         "nette/neon": "^3"
     },
