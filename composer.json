@@ -22,7 +22,7 @@
         "ext-json": "^8.0",
         "davidlienhard/functioncaller": "^1",
         "league/flysystem": "^2",
-        "symfony/yaml": "^5",
+        "symfony/yaml": "^6",
         "nette/neon": "^3"
     },
     "require-dev": {
