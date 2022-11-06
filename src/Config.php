@@ -109,7 +109,7 @@ class Config implements ConfigInterface
             $allKeys = \array_merge([ $mainKey ], $subKeys);
 
             throw new MismatchException(
-                "unable to load configuration for given data: ".\implode(" -> ".$allKeys),
+                "unable to load configuration for given data: ".\implode(" -> ", $allKeys),
                 $m->getCode(),
                 $m
             );
