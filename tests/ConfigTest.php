@@ -5,8 +5,7 @@ namespace DavidLienhard;
 use DavidLienhard\Config\Config;
 use DavidLienhard\Config\ConfigInterface;
 use DavidLienhard\Config\Exceptions\Conversion as ConversionException;
-use DavidLienhard\Config\Exceptions\FileMismatch as FileMismatchException;
-use DavidLienhard\Config\Exceptions\KeyMismatch as KeyMismatchException;
+use DavidLienhard\Config\Exceptions\Mismatch as MismatchException;
 use DavidLienhard\Config\Exceptions\Parse as ParseException;
 use League\Flysystem\Filesystem;
 use League\Flysystem\InMemory\InMemoryFilesystemAdapter;
@@ -103,7 +102,7 @@ class ConfigTest extends TestCase
         $filesystem = $this->getFilesystem();
 
         $config = new Config("/", $filesystem);
-        $this->expectException(FileMismatchException::class);
+        $this->expectException(MismatchException::class);
         $this->expectExceptionMessage("unable to find config file for 'doesNotExist' in '/'");
         $config->get("doesNotExist");
     }
@@ -149,7 +148,7 @@ class ConfigTest extends TestCase
         $filesystem->write("simple.json", self::$files['simple']);
 
         $config = new Config("/", $filesystem);
-        $this->expectException(KeyMismatchException::class);
+        $this->expectException(MismatchException::class);
         $config->get("simple", "doesnotexist");
     }
 
