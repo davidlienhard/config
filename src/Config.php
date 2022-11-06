@@ -105,15 +105,15 @@ class Config implements ConfigInterface
                 $this->loadedConfiguration[$mainKey],
                 ...$subKeys
             );
-        } catch (\MismatchException $m) {
-            $allKeys = \array_merge( [ $mainKey ], $subKeys);
+        } catch (MismatchException $m) {
+            $allKeys = \array_merge([ $mainKey ], $subKeys);
 
-            throw new \MisatchException(
+            throw new MisatchException(
                 "unable to load configuration for given data: ".\implode(" -> ".$allKeys),
                 $m->getCode(),
                 $m
             );
-        }
+        }//end try
     }
 
     /**
