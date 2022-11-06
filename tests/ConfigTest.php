@@ -103,7 +103,7 @@ class ConfigTest extends TestCase
 
         $config = new Config("/", $filesystem);
         $this->expectException(MismatchException::class);
-        $this->expectExceptionMessage("unable to find config file for 'doesNotExist' in '/'");
+        $this->expectExceptionMessage("unable to load configuration for given data: doesNotExist");
         $config->get("doesNotExist");
     }
 
@@ -159,7 +159,7 @@ class ConfigTest extends TestCase
         $filesystem->write("invalid.json", self::$files['invalid']);
 
         $config = new Config("/", $filesystem);
-        $this->expectException(ParseException::class);
+        $this->expectException(MismatchException::class);
         $this->expectExceptionMessageMatches("/^could not parse config file:/");
         $this->assertEquals(null, $config->get("invalid"));
     }
@@ -171,7 +171,7 @@ class ConfigTest extends TestCase
         $filesystem->write("invalid.yml", self::$files['invalidYaml']);
 
         $config = new Config("/", $filesystem);
-        $this->expectException(ParseException::class);
+        $this->expectException(MismatchException::class);
         $this->expectExceptionMessageMatches("/^could not parse config file:/");
         $this->assertEquals(null, $config->get("invalid"));
     }
