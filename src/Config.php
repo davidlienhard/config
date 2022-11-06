@@ -108,7 +108,7 @@ class Config implements ConfigInterface
         } catch (MismatchException $m) {
             $allKeys = \array_merge([ $mainKey ], $subKeys);
 
-            throw new MisatchException(
+            throw new MismatchException(
                 "unable to load configuration for given data: ".\implode(" -> ".$allKeys),
                 $m->getCode(),
                 $m
