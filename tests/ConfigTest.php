@@ -6,7 +6,6 @@ use DavidLienhard\Config\Config;
 use DavidLienhard\Config\ConfigInterface;
 use DavidLienhard\Config\Exceptions\Conversion as ConversionException;
 use DavidLienhard\Config\Exceptions\Mismatch as MismatchException;
-use DavidLienhard\Config\Exceptions\Parse as ParseException;
 use League\Flysystem\Filesystem;
 use League\Flysystem\InMemory\InMemoryFilesystemAdapter;
 use PHPUnit\Framework\TestCase;
