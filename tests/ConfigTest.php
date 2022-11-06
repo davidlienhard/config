@@ -159,7 +159,7 @@ class ConfigTest extends TestCase
 
         $config = new Config("/", $filesystem);
         $this->expectException(MismatchException::class);
-        $this->expectExceptionMessageMatches("/^could not parse config file:/");
+        $this->expectExceptionMessageMatches("/^unable to load configuration for given data: invalid/");
         $this->assertEquals(null, $config->get("invalid"));
     }
 
@@ -171,7 +171,7 @@ class ConfigTest extends TestCase
 
         $config = new Config("/", $filesystem);
         $this->expectException(MismatchException::class);
-        $this->expectExceptionMessageMatches("/^could not parse config file:/");
+        $this->expectExceptionMessageMatches("/^unable to load configuration for given data: invalid/");
         $this->assertEquals(null, $config->get("invalid"));
     }
 
