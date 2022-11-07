@@ -15,6 +15,7 @@ use DavidLienhard\Config\Exceptions\Config as ConfigException;
 use DavidLienhard\Config\Exceptions\Conversion as ConversionException;
 use DavidLienhard\Config\Exceptions\FileMismatch as FileMismatchException;
 use DavidLienhard\Config\Exceptions\KeyMismatch as KeyMismatchException;
+use DavidLienhard\Config\Exceptions\Mismatch as MismatchException;
 use DavidLienhard\Config\Parser\Json as JsonParser;
 use DavidLienhard\Config\Parser\ParserAbstract;
 use DavidLienhard\Config\Parser\Yaml as YamlParser;
@@ -88,21 +89,31 @@ class Config implements ConfigInterface
      */
     public function get(string $mainKey, string ...$subKeys) : mixed
     {
-        // fetch data from json if not loaded already
-        if (!isset($this->loadedConfiguration[$mainKey])) {
-            $this->loadedConfiguration[$mainKey] = $this->loadFile($mainKey);
-        }
+        try {
+            // fetch data from json if not loaded already
+            if (!isset($this->loadedConfiguration[$mainKey])) {
+                $this->loadedConfiguration[$mainKey] = $this->loadFile($mainKey);
+            }
 
-        // return whole data if no subkeys are provided
-        if (count($subKeys) === 0) {
-            return $this->loadedConfiguration[$mainKey];
-        }
+            // return whole data if no subkeys are provided
+            if (count($subKeys) === 0) {
+                return $this->loadedConfiguration[$mainKey];
+            }
 
-        // recurse through configuration
-        return $this->getSubKeys(
-            $this->loadedConfiguration[$mainKey],
-            ...$subKeys
-        );
+            // recurse through configuration
+            return $this->getSubKeys(
+                $this->loadedConfiguration[$mainKey],
+                ...$subKeys
+            );
+        } catch (FileMismatchException | KeyMismatchException $e) {
+            $allKeys = \array_merge([ $mainKey ], $subKeys);
+
+            throw new MismatchException(
+                "unable to load configuration for given data: ".\implode(" -> ", $allKeys),
+                $e->getCode(),
+                $e
+            );
+        }//end try
     }
 
     /**
