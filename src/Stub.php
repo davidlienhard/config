@@ -52,7 +52,7 @@ class Stub implements ConfigInterface
      * @param           string          $subKeys        keys that will be used to find the config
      * @uses            self::$payload
      */
-    public function get(string $mainKey, string ...$subKeys) : mixed
+    public function get(string $mainKey, string ...$subKeys) : int|float|string|bool|array|null
     {
         $filePath = $this->directory.$mainKey.".json";
         if (!isset($this->payload[$mainKey])) {
@@ -184,11 +184,11 @@ class Stub implements ConfigInterface
      *
      * @author          David Lienhard <github@lienhard.win>
      * @copyright       David Lienhard
-     * @param           mixed           $data           data to search through
-     * @param           string          $subKeys        keys that will be used to find the config
+     * @param           int|float|string|bool|array|null    $data       data to search through
+     * @param           string                              $subKeys    keys that will be used to find the config
      * @throws          KeyMismatchException            if given key cannot be found
      */
-    private function getSubKeys(mixed $data, string ...$subKeys) : mixed
+    private function getSubKeys(int|float|string|bool|array|null $data, string ...$subKeys) : int|float|string|bool|array|null
     {
         // return data if not subkeys are given
         if (count($subKeys) === 0) {

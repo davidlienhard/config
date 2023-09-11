@@ -39,7 +39,7 @@ interface ConfigInterface
      * @param           string          $mainKey        the main key of the configuration. will be used as filename
      * @param           string          $subKeys        keys that will be used to find the config
      */
-    public function get(string $mainKey, string ...$subKeys) : mixed;
+    public function get(string $mainKey, string ...$subKeys) : int|float|string|bool|array|null;
 
     /**
      * returns the required configuration as a string

@@ -87,7 +87,7 @@ class Config implements ConfigInterface
      * @param           string          $subKeys        keys that will be used to find the config
      * @uses            self::$loadedConfiguration
      */
-    public function get(string $mainKey, string ...$subKeys) : mixed
+    public function get(string $mainKey, string ...$subKeys) : int|float|string|bool|array|null
     {
         try {
             // fetch data from json if not loaded already
@@ -130,11 +130,11 @@ class Config implements ConfigInterface
     {
         $data = $this->get($mainKey, ...$subKeys);
 
-        if (is_array($data)) {
+        if (\is_array($data)) {
             throw new ConversionException("cannot convert array to string");
         }
 
-        return strval($data);
+        return \strval($data);
     }
 
     /**
@@ -151,11 +151,11 @@ class Config implements ConfigInterface
     {
         $data = $this->get($mainKey, ...$subKeys);
 
-        if (is_array($data)) {
+        if (\is_array($data)) {
             throw new ConversionException("cannot convert array to int");
         }
 
-        return intval($data);
+        return \intval($data);
     }
 
     /**
@@ -172,11 +172,11 @@ class Config implements ConfigInterface
     {
         $data = $this->get($mainKey, ...$subKeys);
 
-        if (is_array($data)) {
+        if (\is_array($data)) {
             throw new ConversionException("cannot convert array to float");
         }
 
-        return floatval($data);
+        return \floatval($data);
     }
 
     /**
@@ -193,11 +193,11 @@ class Config implements ConfigInterface
     {
         $data = $this->get($mainKey, ...$subKeys);
 
-        if (is_array($data)) {
+        if (\is_array($data)) {
             throw new ConversionException("cannot convert array to bool");
         }
 
-        return boolval($data);
+        return \boolval($data);
     }
 
     /**
@@ -214,7 +214,7 @@ class Config implements ConfigInterface
     {
         $data = $this->get($mainKey, ...$subKeys);
 
-        if (!is_array($data)) {
+        if (!\is_array($data)) {
             throw new ConversionException("given data cannot be returned as an array");
         }
 
@@ -226,22 +226,22 @@ class Config implements ConfigInterface
      *
      * @author          David Lienhard <github@lienhard.win>
      * @copyright       David Lienhard
-     * @param           mixed           $data           data to search through
-     * @param           string          $subKeys        keys that will be used to find the config
-     * @throws          KeyMismatchException            if given key cannot be found
+     * @param           int|float|string|bool|array|null    $data       data to search through
+     * @param           string                              $subKeys    keys that will be used to find the config
+     * @throws          KeyMismatchException                if given key cannot be found
      */
-    private function getSubKeys(mixed $data, string ...$subKeys) : mixed
+    private function getSubKeys(int|float|string|bool|array|null $data, string ...$subKeys) : int|float|string|bool|array|null
     {
         // return data if not subkeys are given
-        if (count($subKeys) === 0) {
+        if (\count($subKeys) === 0) {
             return $data;
         }
 
         // extract first key and remove it from subkeys
-        $firstKey = array_shift($subKeys);
+        $firstKey = \array_shift($subKeys);
 
         // throw if given key does not exist
-        if (!is_array($data) || !array_key_exists($firstKey, $data)) {
+        if (!\is_array($data) || !\array_key_exists($firstKey, $data)) {
             throw new KeyMismatchException("configuration mismatch. check you configuration");
         }
 
@@ -340,7 +340,7 @@ class Config implements ConfigInterface
         $config = $parser->parse($fileContent);
 
         // run $this->replace() to fetch env variables
-        array_walk_recursive($config, [ $this, "replace" ]);
+        \array_walk_recursive($config, [ $this, "replace" ]);
 
         return $config;
     }
@@ -356,8 +356,8 @@ class Config implements ConfigInterface
      */
     private function replace(mixed &$item, int|string $key) : void
     {
-        if (is_string($item) && strtolower(substr($item, 0, 4)) === "env:") {
-            $item = getenv(substr($item, 4));
+        if (\is_string($item) && \strtolower(\substr($item, 0, 4)) === "env:") {
+            $item = \getenv(\substr($item, 4));
         }
     }
 
