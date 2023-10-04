@@ -96,6 +96,29 @@ class Stub implements ConfigInterface
     }
 
     /**
+     * returns the required configuration as a string or null
+     *
+     * @author          David Lienhard <github@lienhard.win>
+     * @copyright       David Lienhard
+     * @param           string          $mainKey        the main key of the configuration. will be used as filename
+     * @param           string          $subKeys        keys that will be used to find the config
+     * @uses            self::get()
+     * @throws          ConversionException             if data cannot be returned as a string
+     */
+    public function getAsNullableString(string $mainKey, string ...$subKeys) : string|null
+    {
+        $data = $this->get($mainKey, ...$subKeys);
+
+        if (is_array($data)) {
+            throw new ConversionException("cannot convert array to string");
+        }
+
+        return $data !== null
+            ? strval($data)
+            : null;
+    }
+
+    /**
      * returns the required configuration as an int
      *
      * @author          David Lienhard <github@lienhard.win>
@@ -114,6 +137,29 @@ class Stub implements ConfigInterface
         }
 
         return intval($data);
+    }
+
+    /**
+     * returns the required configuration as an int or null
+     *
+     * @author          David Lienhard <github@lienhard.win>
+     * @copyright       David Lienhard
+     * @param           string          $mainKey        the main key of the configuration. will be used as filename
+     * @param           string          $subKeys        keys that will be used to find the config
+     * @uses            self::get()
+     * @throws          ConversionException             if data cannot be returned as an int
+     */
+    public function getAsNullableInt(string $mainKey, string ...$subKeys) : int|null
+    {
+        $data = $this->get($mainKey, ...$subKeys);
+
+        if (is_array($data)) {
+            throw new ConversionException("cannot convert array to int");
+        }
+
+        return $data !== null
+            ? intval($data)
+            : null;
     }
 
     /**
@@ -138,6 +184,29 @@ class Stub implements ConfigInterface
     }
 
     /**
+     * returns the required configuration as a float or null
+     *
+     * @author          David Lienhard <github@lienhard.win>
+     * @copyright       David Lienhard
+     * @param           string          $mainKey        the main key of the configuration. will be used as filename
+     * @param           string          $subKeys        keys that will be used to find the config
+     * @uses            self::get()
+     * @throws          ConversionException             if data cannot be returned as a float
+     */
+    public function getAsNullableFloat(string $mainKey, string ...$subKeys) : float|null
+    {
+        $data = $this->get($mainKey, ...$subKeys);
+
+        if (is_array($data)) {
+            throw new ConversionException("cannot convert array to float");
+        }
+
+        return $data !== null
+            ? floatval($data)
+            : null;
+    }
+
+    /**
      * returns the required configuration as a bool
      *
      * @author          David Lienhard <github@lienhard.win>
@@ -159,6 +228,29 @@ class Stub implements ConfigInterface
     }
 
     /**
+     * returns the required configuration as a bool or null
+     *
+     * @author          David Lienhard <github@lienhard.win>
+     * @copyright       David Lienhard
+     * @param           string          $mainKey        the main key of the configuration. will be used as filename
+     * @param           string          $subKeys        keys that will be used to find the config
+     * @uses            self::get()
+     * @throws          ConversionException             if data cannot be returned as a bool
+     */
+    public function getAsNullableBool(string $mainKey, string ...$subKeys) : bool|null
+    {
+        $data = $this->get($mainKey, ...$subKeys);
+
+        if (is_array($data)) {
+            throw new ConversionException("cannot convert array to bool");
+        }
+
+        return $data !== null
+            ? boolval($data)
+            : null;
+    }
+
+    /**
      * returns the required configuration as an array
      *
      * @author          David Lienhard <github@lienhard.win>
@@ -171,6 +263,31 @@ class Stub implements ConfigInterface
     public function getAsArray(string $mainKey, string ...$subKeys) : array
     {
         $data = $this->get($mainKey, ...$subKeys);
+
+        if (!is_array($data)) {
+            throw new ConversionException("given data cannot be returned as an array");
+        }
+
+        return $data;
+    }
+
+    /**
+     * returns the required configuration as an array or null
+     *
+     * @author          David Lienhard <github@lienhard.win>
+     * @copyright       David Lienhard
+     * @param           string          $mainKey        the main key of the configuration. will be used as filename
+     * @param           string          $subKeys        keys that will be used to find the config
+     * @uses            self::get()
+     * @throws          ConversionException             if data cannot be returned as an array
+     */
+    public function getAsNullableArray(string $mainKey, string ...$subKeys) : array|null
+    {
+        $data = $this->get($mainKey, ...$subKeys);
+
+        if ($data === null) {
+            return null;
+        }
 
         if (!is_array($data)) {
             throw new ConversionException("given data cannot be returned as an array");
