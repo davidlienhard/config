@@ -1,7 +1,38 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Property DavidLienhard\\\\Config\\\\Stub\\:\\:\\$filesystem is never read, only written\\.$#"
+			message: '#^Argument of an invalid type mixed supplied for foreach, only iterables are supported\.$#'
+			identifier: foreach.nonIterable
+			count: 1
+			path: src/Config.php
+
+		-
+			message: '#^Method DavidLienhard\\Config\\Config\:\:get\(\) should return array\|bool\|float\|int\|string\|null but returns mixed\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Config.php
+
+		-
+			message: '#^Parameter \#1 \$data of method DavidLienhard\\Config\\Config\:\:getSubKeys\(\) expects array\|bool\|float\|int\|string\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 2
+			path: src/Config.php
+
+		-
+			message: '#^Method DavidLienhard\\Config\\Stub\:\:get\(\) should return array\|bool\|float\|int\|string\|null but returns mixed\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Stub.php
+
+		-
+			message: '#^Parameter \#1 \$data of method DavidLienhard\\Config\\Stub\:\:getSubKeys\(\) expects array\|bool\|float\|int\|string\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 2
+			path: src/Stub.php
+
+		-
+			message: '#^Property DavidLienhard\\Config\\Stub\:\:\$filesystem is never read, only written\.$#'
+			identifier: property.onlyWritten
 			count: 1
 			path: src/Stub.php
 
