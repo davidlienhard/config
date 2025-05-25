@@ -24,10 +24,7 @@ use League\Flysystem\Filesystem;
  */
 class Stub implements ConfigInterface
 {
-    /**
-     * the payload to use in the config
-     * @var array
-     */
+    /** the payload to use in the config */
     private array $payload = [];
 
     /**
