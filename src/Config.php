@@ -32,10 +32,7 @@ use League\Flysystem\UnableToReadFile;
 */
 class Config implements ConfigInterface
 {
-    /**
-     * contains the already loaded configuration objects
-     * @var array
-     */
+    /** contains the already loaded configuration objects */
     private array $loadedConfiguration = [];
 
     /** filesystem to use */
