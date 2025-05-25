@@ -10,7 +10,6 @@
 
 namespace DavidLienhard\Config\Parser;
 
-use DavidLienhard\Config\Exceptions\FileMismatch as FileMismatchException;
 use DavidLienhard\Config\Exceptions\Parse as ParseException;
 use DavidLienhard\Config\Parser\ParserAbstract;
 
@@ -41,10 +40,6 @@ class Ini extends ParserAbstract implements ParserInterface
         $config = \parse_ini_string($fileContent, true);
         if ($config === false) {
             throw new ParseException("could not parse config file");
-        }
-
-        if (!\is_array($config)) {
-            throw new FileMismatchException("data must be array at this point");
         }
 
         return $config;
