@@ -23,7 +23,8 @@
         "davidlienhard/functioncaller": "^1",
         "league/flysystem": "^3",
         "symfony/yaml": "^7",
-        "nette/neon": "^3"
+        "nette/neon": "^3",
+        "davidlienhard/convert": "^1"
     },
     "require-dev": {
         "phpunit/phpunit": "^11",
