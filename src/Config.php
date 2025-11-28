@@ -19,6 +19,7 @@ use DavidLienhard\Config\Exceptions\Mismatch as MismatchException;
 use DavidLienhard\Config\Parser\Json as JsonParser;
 use DavidLienhard\Config\Parser\ParserAbstract;
 use DavidLienhard\Config\Parser\Yaml as YamlParser;
+use DavidLienhard\Convert\Convert;
 use League\Flysystem\Filesystem;
 use League\Flysystem\FilesystemException;
 use League\Flysystem\Local\LocalFilesystemAdapter;
@@ -489,7 +490,7 @@ class Config implements ConfigInterface
             $supportedFiletypes = $parser::getSupportedFiletypes();
 
             foreach ($supportedFiletypes as $filetype) {
-                $this->filetypeList[$filetype] = $parser;
+                $this->filetypeList[Convert::toString($filetype)] = $parser;
             }
         }
     }
