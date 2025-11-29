@@ -9,6 +9,7 @@ use DavidLienhard\Config\Exceptions\KeyMismatch as KeyMismatchException;
 use DavidLienhard\Config\Stub as Config;
 use PHPUnit\Framework\TestCase;
 
+#[CoversClass(Config::class) ]
 class StubTest extends TestCase
 {
     protected static array $payload = [];
@@ -46,21 +47,21 @@ class StubTest extends TestCase
         self::$payload['env'] = [ "key" => "ENV:TEST_VARIABLE" ];
     }
 
-    /** @covers \DavidLienhard\Config\Stub */
+    #[Test]
     public function testCanBeCreated(): void
     {
         $config = new Config("/");
         $this->assertInstanceOf(Config::class, $config);
         $this->assertInstanceOf(ConfigInterface::class, $config);
     }
-    /** @covers \DavidLienhard\Config\Stub */
+    #[Test]
     public function testCannotBeCreatedWithoutFolder(): void
     {
         $this->expectException(\ArgumentCountError::class);
         new Config;
     }
 
-    /** @covers \DavidLienhard\Config\Stub */
+    #[Test]
     public function testThrowsExceptionIfMainKeyDoesNotExist() : void
     {
         $config = new Config("/");
@@ -69,7 +70,7 @@ class StubTest extends TestCase
         $config->get("doesNotExist");
     }
 
-    /** @covers \DavidLienhard\Config\Stub */
+    #[Test]
     public function testCanReadSimpleFile() : void
     {
         $config = new Config("/");
@@ -77,7 +78,7 @@ class StubTest extends TestCase
         $this->assertEquals([ "key" => "value" ], $config->get("simple"));
     }
 
-    /** @covers \DavidLienhard\Config\Stub */
+    #[Test]
     public function testCanReadComplexFile() : void
     {
         $config = new Config("/");
@@ -100,7 +101,7 @@ class StubTest extends TestCase
         $this->assertEquals(-1516.51, $config->get("complex", "key", "float2"));
     }
 
-    /** @covers \DavidLienhard\Config\Stub */
+    #[Test]
     public function testNotExistingSubKeyReturnsNull() : void
     {
         $config = new Config("/");
@@ -110,7 +111,7 @@ class StubTest extends TestCase
         $config->get("simple", "doesnotexist");
     }
 
-    /** @covers \DavidLienhard\Config\Stub */
+    #[Test]
     /* public function testThrowsExceptionOnInvalidJsonFile() : void
     {
         $config = new Config("/");
@@ -121,7 +122,7 @@ class StubTest extends TestCase
         $this->assertEquals(null, $config->get("invalid"));
     } */
 
-    /** @covers \DavidLienhard\Config\Stub */
+    #[Test]
     public function testCanReadEnvData() : void
     {
         $config = new Config("/");
@@ -132,7 +133,7 @@ class StubTest extends TestCase
         putenv("TEST_VARIABLE");
     }
 
-    /** @covers \DavidLienhard\Config\Stub */
+    #[Test]
     public function testCanGetDirectory() : void
     {
         $config = new Config("/test/directory");
@@ -141,7 +142,7 @@ class StubTest extends TestCase
         $this->assertEquals("/test/directory", $config->getDirectory());
     }
 
-    /** @covers \DavidLienhard\Config\Stub */
+    #[Test]
     public function testCanGetAsString() : void
     {
         $config = new Config("/");
@@ -181,7 +182,7 @@ class StubTest extends TestCase
         $config->getAsString("complex", "key", "array");
     }
 
-    /** @covers \DavidLienhard\Config\Stub */
+    #[Test]
     public function testCanGetAsInt() : void
     {
         $config = new Config("/");
@@ -221,7 +222,7 @@ class StubTest extends TestCase
         $config->getAsInt("complex", "key", "array");
     }
 
-    /** @covers \DavidLienhard\Config\Stub */
+    #[Test]
     public function testCanGetAsFloat() : void
     {
         $config = new Config("/");
@@ -261,7 +262,7 @@ class StubTest extends TestCase
         $config->getAsFloat("complex", "key", "array");
     }
 
-    /** @covers \DavidLienhard\Config\Stub */
+    #[Test]
     public function testCanGetAsBool() : void
     {
         $config = new Config("/");
@@ -301,7 +302,7 @@ class StubTest extends TestCase
         $config->getAsBool("complex", "key", "array");
     }
 
-    /** @covers \DavidLienhard\Config\Stub */
+    #[Test]
     public function testCannotGetStringAsArray() : void
     {
         $config = new Config("/");
@@ -311,7 +312,7 @@ class StubTest extends TestCase
         $config->getAsArray("complex", "key", "string");
     }
 
-    /** @covers \DavidLienhard\Config\Stub */
+    #[Test]
     public function testCannotGetIntAsArray() : void
     {
         $config = new Config("/");
@@ -321,7 +322,7 @@ class StubTest extends TestCase
         $config->getAsArray("complex", "key", "int1");
     }
 
-    /** @covers \DavidLienhard\Config\Stub */
+    #[Test]
     public function testCannotGetFloatAsArray() : void
     {
         $config = new Config("/");
@@ -331,7 +332,7 @@ class StubTest extends TestCase
         $config->getAsArray("complex", "key", "float1");
     }
 
-    /** @covers \DavidLienhard\Config\Stub */
+    #[Test]
     public function testCannotGetBoolTrueAsArray() : void
     {
         $config = new Config("/");
@@ -341,7 +342,7 @@ class StubTest extends TestCase
         $config->getAsArray("complex", "key", "boolTrue");
     }
 
-    /** @covers \DavidLienhard\Config\Stub */
+    #[Test]
     public function testCannotGetBoolFalseAsArray() : void
     {
         $config = new Config("/");
@@ -351,7 +352,7 @@ class StubTest extends TestCase
         $config->getAsArray("complex", "key", "boolFalse");
     }
 
-    /** @covers \DavidLienhard\Config\Stub */
+    #[Test]
     public function testCannotGetNullAsArray() : void
     {
         $config = new Config("/");
@@ -361,7 +362,7 @@ class StubTest extends TestCase
         $config->getAsArray("complex", "key", "null");
     }
 
-    /** @covers \DavidLienhard\Config\Stub */
+    #[Test]
     public function testCanGetAsArray() : void
     {
         $config = new Config("/");
