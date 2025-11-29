@@ -8,8 +8,11 @@ use DavidLienhard\Config\Exceptions\Conversion as ConversionException;
 use DavidLienhard\Config\Exceptions\Mismatch as MismatchException;
 use League\Flysystem\Filesystem;
 use League\Flysystem\InMemory\InMemoryFilesystemAdapter;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
+#[CoversClass(Config::class) ]
 class ConfigTest extends TestCase
 {
     protected static array $files = [];
@@ -81,21 +84,22 @@ class ConfigTest extends TestCase
         return new Filesystem($adapter);
     }
 
-    /** @covers \DavidLienhard\Config\Config */
+    #[Test]
     public function testCanBeCreated(): void
     {
         $config = new Config("/");
         $this->assertInstanceOf(Config::class, $config);
         $this->assertInstanceOf(ConfigInterface::class, $config);
     }
-    /** @covers \DavidLienhard\Config\Config */
+
+    #[Test]
     public function testCannotBeCreatedWithoutFolder(): void
     {
         $this->expectException(\ArgumentCountError::class);
         new Config;
     }
 
-    /** @covers \DavidLienhard\Config\Config */
+    #[Test]
     public function testThrowsExceptionIfMainKeyDoesNotExist() : void
     {
         $filesystem = $this->getFilesystem();
@@ -106,7 +110,7 @@ class ConfigTest extends TestCase
         $config->get("doesNotExist");
     }
 
-    /** @covers \DavidLienhard\Config\Config */
+    #[Test]
     public function testCanReadSimpleFile() : void
     {
         $filesystem = $this->getFilesystem();
@@ -116,7 +120,7 @@ class ConfigTest extends TestCase
         $this->assertEquals([ "key" => "value" ], $config->get("simple"));
     }
 
-    /** @covers \DavidLienhard\Config\Config */
+    #[Test]
     public function testCanReadComplexFile() : void
     {
         $filesystem = $this->getFilesystem();
@@ -140,7 +144,7 @@ class ConfigTest extends TestCase
         $this->assertEquals(-1516.51, $config->get("complex", "key", "float2"));
     }
 
-    /** @covers \DavidLienhard\Config\Config */
+    #[Test]
     public function testNotExistingSubKeyReturnsNull() : void
     {
         $filesystem = $this->getFilesystem();
@@ -151,7 +155,7 @@ class ConfigTest extends TestCase
         $config->get("simple", "doesnotexist");
     }
 
-    /** @covers \DavidLienhard\Config\Config */
+    #[Test]
     public function testThrowsExceptionOnInvalidJsonFile() : void
     {
         $filesystem = $this->getFilesystem();
@@ -163,7 +167,7 @@ class ConfigTest extends TestCase
         $this->assertEquals(null, $config->get("invalid"));
     }
 
-    /** @covers \DavidLienhard\Config\Config */
+    #[Test]
     public function testThrowsExceptionOnInvalidYamlFile() : void
     {
         $filesystem = $this->getFilesystem();
@@ -175,7 +179,7 @@ class ConfigTest extends TestCase
         $this->assertEquals(null, $config->get("invalid"));
     }
 
-    /** @covers \DavidLienhard\Config\Config */
+    #[Test]
     public function testCanReadEnvData() : void
     {
         $filesystem = $this->getFilesystem();
@@ -188,7 +192,7 @@ class ConfigTest extends TestCase
         putenv("TEST_VARIABLE");
     }
 
-    /** @covers \DavidLienhard\Config\Config */
+    #[Test]
     public function testCanGetDirectory() : void
     {
         $filesystem = $this->getFilesystem();
@@ -197,7 +201,7 @@ class ConfigTest extends TestCase
         $this->assertEquals("/test/directory", $config->getDirectory());
     }
 
-    /** @covers \DavidLienhard\Config\Config */
+    #[Test]
     public function testCanGetAsString() : void
     {
         $filesystem = $this->getFilesystem();
@@ -239,7 +243,7 @@ class ConfigTest extends TestCase
         $config->getAsString("complex", "key", "array");
     }
 
-    /** @covers \DavidLienhard\Config\Config */
+    #[Test]
     public function testCanGetAsInt() : void
     {
         $filesystem = $this->getFilesystem();
@@ -281,7 +285,7 @@ class ConfigTest extends TestCase
         $config->getAsInt("complex", "key", "array");
     }
 
-    /** @covers \DavidLienhard\Config\Config */
+    #[Test]
     public function testCanGetAsFloat() : void
     {
         $filesystem = $this->getFilesystem();
@@ -323,7 +327,7 @@ class ConfigTest extends TestCase
         $config->getAsFloat("complex", "key", "array");
     }
 
-    /** @covers \DavidLienhard\Config\Config */
+    #[Test]
     public function testCanGetAsBool() : void
     {
         $filesystem = $this->getFilesystem();
@@ -365,7 +369,7 @@ class ConfigTest extends TestCase
         $config->getAsBool("complex", "key", "array");
     }
 
-    /** @covers \DavidLienhard\Config\Config */
+    #[Test]
     public function testCannotGetStringAsArray() : void
     {
         $filesystem = $this->getFilesystem();
@@ -378,7 +382,7 @@ class ConfigTest extends TestCase
         $config->getAsArray("complex", "key", "string");
     }
 
-    /** @covers \DavidLienhard\Config\Config */
+    #[Test]
     public function testCannotGetIntAsArray() : void
     {
         $filesystem = $this->getFilesystem();
@@ -391,7 +395,7 @@ class ConfigTest extends TestCase
         $config->getAsArray("complex", "key", "int1");
     }
 
-    /** @covers \DavidLienhard\Config\Config */
+    #[Test]
     public function testCannotGetFloatAsArray() : void
     {
         $filesystem = $this->getFilesystem();
@@ -404,7 +408,7 @@ class ConfigTest extends TestCase
         $config->getAsArray("complex", "key", "float1");
     }
 
-    /** @covers \DavidLienhard\Config\Config */
+    #[Test]
     public function testCannotGetBoolTrueAsArray() : void
     {
         $filesystem = $this->getFilesystem();
@@ -417,7 +421,7 @@ class ConfigTest extends TestCase
         $config->getAsArray("complex", "key", "boolTrue");
     }
 
-    /** @covers \DavidLienhard\Config\Config */
+    #[Test]
     public function testCannotGetBoolFalseAsArray() : void
     {
         $filesystem = $this->getFilesystem();
@@ -430,7 +434,7 @@ class ConfigTest extends TestCase
         $config->getAsArray("complex", "key", "boolFalse");
     }
 
-    /** @covers \DavidLienhard\Config\Config */
+    #[Test]
     public function testCannotGetNullAsArray() : void
     {
         $filesystem = $this->getFilesystem();
@@ -443,7 +447,7 @@ class ConfigTest extends TestCase
         $config->getAsArray("complex", "key", "null");
     }
 
-    /** @covers \DavidLienhard\Config\Config */
+    #[Test]
     public function testCanGetAsArray() : void
     {
         $filesystem = $this->getFilesystem();
@@ -462,7 +466,7 @@ class ConfigTest extends TestCase
         $this->assertIsArray($result);
     }
 
-    /** @covers \DavidLienhard\Config\Config */
+    #[Test]
     public function testJsonAndYmlAreIdentical() : void
     {
         $filesystem = $this->getFilesystem();
